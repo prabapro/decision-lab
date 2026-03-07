@@ -9,9 +9,9 @@ import {
 } from 'react';
 
 export const PHASE_DURATIONS = {
-  1: 90,
-  2: 30,
-  3: 25,
+  1: 5, // default: 90
+  2: 3, // default: 30
+  3: 2, // default: 25
 };
 
 export const PHASE_META = {

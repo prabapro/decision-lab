@@ -4,6 +4,8 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { HIGH_IMPACT_MONTHS } from '@data/scenarios';
 
+const appName = import.meta.env.VITE_APP_NAME || 'Vite React App';
+
 const INITIAL_GAME_STATE = {
   teamName: '',
   currentMonth: 1,
@@ -87,7 +89,7 @@ export const useGameStore = create()(
         resetGame: () => set({ ...INITIAL_GAME_STATE }),
       }),
       {
-        name: 'decision-lab-game',
+        name: appName + '-game',
         version: 1,
       },
     ),
