@@ -1,5 +1,11 @@
 {
   "name": "decision-lab",
+  "description": "A timed, team-based leadership simulation game where players face 12 real-world crisis scenarios drawn from history, make decisions under time pressure, and are scored on their strategic quality.",
+  "author": {
+    "name": "Praba Ponnambalam",
+    "email": "praba@hoptira.com",
+    "url": "https://hoptira.com"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
