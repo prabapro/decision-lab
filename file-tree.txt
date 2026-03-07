@@ -9,16 +9,19 @@
 │   ├── components
 │   │   ├── common
 │   │   │   ├── ErrorBoundary.jsx
+│   │   │   ├── GameGuard.jsx
 │   │   │   ├── LoadingSpinner.jsx
 │   │   │   ├── MarkdownRenderer.jsx
 │   │   │   └── ScrollToTop.jsx
 │   │   ├── layout
 │   │   │   ├── Footer.jsx
+│   │   │   ├── GameLayout.jsx
 │   │   │   ├── Header.jsx
 │   │   │   ├── Layout.jsx
 │   │   │   ├── MobileMenu.jsx
 │   │   │   └── Navigation.jsx
 │   │   └── ui
+│   │       ├── alert-dialog.jsx
 │   │       ├── badge.jsx
 │   │       ├── button.jsx
 │   │       ├── card.jsx
@@ -29,19 +32,25 @@
 │   │   └── routes.js
 │   ├── data
 │   │   ├── privacy-policy.md
+│   │   ├── scenarios.js
 │   │   └── terms.md
 │   ├── hooks
+│   │   ├── usePhaseTimer.js
 │   │   └── useTheme.js
 │   ├── lib
 │   │   └── utils.js
 │   ├── pages
 │   │   ├── Home.jsx
 │   │   ├── NotFound.jsx
+│   │   ├── Play.jsx
 │   │   ├── Privacy.jsx
+│   │   ├── Results.jsx
+│   │   ├── Reveal.jsx
 │   │   └── Terms.jsx
 │   ├── routes
 │   │   └── AppRouter.jsx
 │   ├── stores
+│   │   ├── useGameStore.js
 │   │   └── useSettingsStore.js
 │   ├── styles
 │   │   └── index.css

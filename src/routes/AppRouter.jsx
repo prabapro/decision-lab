@@ -1,27 +1,30 @@
 // src/routes/AppRouter.jsx
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
 import LoadingSpinner from '@components/common/LoadingSpinner';
 import ErrorBoundary from '@components/common/ErrorBoundary';
 import ScrollToTop from '@components/common/ScrollToTop';
-import { getRouterConfig } from '@config/routes';
+import { ROUTE_CONFIG } from '@config/routes';
 import Layout from '@components/layout/Layout';
+import GameLayout from '@components/layout/GameLayout';
 
-// Loading fallback component
+// ---------------------------------------------------------------------------
+// Loading / error fallbacks
+// ---------------------------------------------------------------------------
+
 const PageLoader = () => (
   <div className="flex items-center justify-center min-h-[60vh]">
-    <LoadingSpinner size="lg" text="Loading page..." />
+    <LoadingSpinner size="lg" text="Loading..." />
   </div>
 );
 
-// Error fallback for lazy loading failures
 const LazyErrorFallback = ({ error, resetErrorBoundary }) => (
-  <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
+  <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4 text-center px-4">
     <h2 className="text-xl font-semibold text-foreground">
       Failed to load page
     </h2>
-    <p className="text-muted-foreground text-center max-w-md">
+    <p className="text-muted-foreground max-w-md">
       {error?.message || 'There was an error loading this page.'}
     </p>
     <button
@@ -32,8 +35,10 @@ const LazyErrorFallback = ({ error, resetErrorBoundary }) => (
   </div>
 );
 
-// Route wrapper component with error boundary and suspense
-// eslint-disable-next-line no-unused-vars
+// ---------------------------------------------------------------------------
+// Route wrapper — error boundary + suspense per route
+// ---------------------------------------------------------------------------
+
 const RouteWrapper = ({ component: Component }) => (
   <ErrorBoundary fallback={LazyErrorFallback}>
     <Suspense fallback={<PageLoader />}>
@@ -42,42 +47,94 @@ const RouteWrapper = ({ component: Component }) => (
   </ErrorBoundary>
 );
 
-// Helper function to create a route element
-const createRouteElement = (routeConfig) => {
-  const { path, component, isIndex, isWildcard } = routeConfig;
-  const routeKey = isIndex ? 'index' : isWildcard ? 'wildcard' : path;
+// ---------------------------------------------------------------------------
+// Layout wrappers (use Outlet so they work as React Router layout routes)
+// ---------------------------------------------------------------------------
 
-  const element = <RouteWrapper component={component} />;
+/**
+ * Standard layout — passes matched child route through Layout's children prop.
+ */
+const StandardLayoutWrapper = () => (
+  <Layout>
+    <Outlet />
+  </Layout>
+);
 
-  if (isIndex) {
-    return <Route key={routeKey} index element={element} />;
+// GameLayout already uses <Outlet /> internally, so it doubles as a layout route directly.
+
+// ---------------------------------------------------------------------------
+// Route builder helpers
+// ---------------------------------------------------------------------------
+
+function buildRoute(route) {
+  const cleanPath = route.path.startsWith('/')
+    ? route.path.slice(1)
+    : route.path;
+
+  if (route.isIndex) {
+    return (
+      <Route
+        key="index"
+        index
+        element={<RouteWrapper component={route.component} />}
+      />
+    );
   }
-
-  if (isWildcard) {
-    return <Route key={routeKey} path={path} element={element} />;
+  if (route.isWildcard) {
+    return (
+      <Route
+        key="wildcard"
+        path="*"
+        element={<RouteWrapper component={route.component} />}
+      />
+    );
   }
-
-  // Clean path for regular routes
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  return <Route key={routeKey} path={cleanPath} element={element} />;
-};
-
-// App Routes component
-function AppRoutes() {
-  const routes = getRouterConfig();
-
-  return <Routes>{routes.map(createRouteElement)}</Routes>;
+  return (
+    <Route
+      key={route.path}
+      path={cleanPath}
+      element={<RouteWrapper component={route.component} />}
+    />
+  );
 }
+
+// ---------------------------------------------------------------------------
+// App routes
+// ---------------------------------------------------------------------------
+
+function AppRoutes() {
+  const all = Object.values(ROUTE_CONFIG);
+  const gameRoutes = all.filter((r) => r.gameRoute);
+  const standardRoutes = all.filter((r) => !r.gameRoute);
+
+  return (
+    <Routes>
+      {/*
+       * Game routes — rendered inside GameLayout (dark, immersive, no nav).
+       * Covers: /, /play, /reveal, /results
+       */}
+      <Route element={<GameLayout />}>{gameRoutes.map(buildRoute)}</Route>
+
+      {/*
+       * Standard routes — rendered inside Layout (header + footer).
+       * Covers: /privacy, /terms, * (404)
+       */}
+      <Route element={<StandardLayoutWrapper />}>
+        {standardRoutes.map(buildRoute)}
+      </Route>
+    </Routes>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Root router
+// ---------------------------------------------------------------------------
 
 export default function AppRouter() {
   return (
     <BrowserRouter>
-      {/* ScrollToTop component - listens to route changes and scrolls to top */}
       <ScrollToTop />
-
-      <Layout>
-        <AppRoutes />
-      </Layout>
+      <AppRoutes />
     </BrowserRouter>
   );
 }

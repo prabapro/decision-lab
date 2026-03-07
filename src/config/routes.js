@@ -3,37 +3,62 @@
 import { lazy } from 'react';
 
 /**
- * Unified route configuration - single source of truth for:
- * - Route paths
- * - Component imports (lazy loaded)
- * - Route metadata
- * - Navigation structure
- * - SEO and sitemap data
+ * Unified route configuration.
+ * Routes with `gameRoute: true` are rendered inside GameLayout (no header/footer).
+ * All other routes use the standard Layout.
  */
 
-// Lazy load all page components
+// Lazy-load all page components
 const Home = lazy(() => import('@pages/Home'));
 const Privacy = lazy(() => import('@pages/Privacy'));
 const Terms = lazy(() => import('@pages/Terms'));
 const NotFound = lazy(() => import('@pages/NotFound'));
+const Play = lazy(() => import('@pages/Play'));
+const Reveal = lazy(() => import('@pages/Reveal'));
+const Results = lazy(() => import('@pages/Results'));
 
-/**
- * Complete route configuration
- * Each route defines: path, component, metadata, navigation info, and sitemap data
- */
 export const ROUTE_CONFIG = {
-  // Main routes
+  // -------------------------------------------------------------------------
+  // Game routes — rendered inside GameLayout, no header/footer
+  // -------------------------------------------------------------------------
   HOME: {
     path: '/',
     component: Home,
     isIndex: true,
+    gameRoute: true,
     title: 'Home',
     showInNav: false,
     sitemap_priority: 1.0,
     sitemap_changefreq: 'weekly',
   },
 
-  // Legal pages
+  PLAY: {
+    path: '/play',
+    component: Play,
+    gameRoute: true,
+    title: 'Play',
+    showInNav: false,
+  },
+
+  REVEAL: {
+    path: '/reveal',
+    component: Reveal,
+    gameRoute: true,
+    title: 'Reveal',
+    showInNav: false,
+  },
+
+  RESULTS: {
+    path: '/results',
+    component: Results,
+    gameRoute: true,
+    title: 'Results',
+    showInNav: false,
+  },
+
+  // -------------------------------------------------------------------------
+  // Standard routes — rendered inside Layout with header/footer
+  // -------------------------------------------------------------------------
   PRIVACY: {
     path: '/privacy',
     component: Privacy,
@@ -49,85 +74,55 @@ export const ROUTE_CONFIG = {
     path: '/terms',
     component: Terms,
     title: 'Terms of Service',
-    description: 'Terms and conditions for using xxx',
+    description: 'Terms and conditions for using the app',
     showInNav: false,
     category: 'legal',
     sitemap_priority: 0.5,
     sitemap_changefreq: 'monthly',
   },
 
-  // Special routes (excluded from sitemap)
   NOT_FOUND: {
     path: '*',
     component: NotFound,
     title: 'Not Found',
     showInNav: false,
     isWildcard: true,
-    // No sitemap fields - excluded from sitemap
   },
 };
 
-// Helper functions to work with route config
+// ---------------------------------------------------------------------------
+// Helper utilities (unchanged from boilerplate)
+// ---------------------------------------------------------------------------
 
-/**
- * Get all route paths for validation
- */
-export const getAllRoutePaths = () => {
-  return Object.values(ROUTE_CONFIG)
-    .filter((route) => !route.isWildcard)
-    .map((route) => route.path);
-};
+export const getAllRoutePaths = () =>
+  Object.values(ROUTE_CONFIG)
+    .filter((r) => !r.isWildcard)
+    .map((r) => r.path);
 
-/**
- * Check if a route path is known/valid
- */
-export const isKnownRoute = (pathname) => {
-  return getAllRoutePaths().includes(pathname);
-};
+export const isKnownRoute = (pathname) => getAllRoutePaths().includes(pathname);
 
-/**
- * Get route config by path
- */
-export const getRouteByPath = (pathname) => {
-  return Object.values(ROUTE_CONFIG).find((route) => route.path === pathname);
-};
+export const getRouteByPath = (pathname) =>
+  Object.values(ROUTE_CONFIG).find((r) => r.path === pathname);
 
-/**
- * Get routes for navigation (filtered and categorized)
- */
 export const getNavigationRoutes = () => {
-  const routes = Object.values(ROUTE_CONFIG).filter((route) => route.showInNav);
-
+  const routes = Object.values(ROUTE_CONFIG).filter((r) => r.showInNav);
   return {
-    tools: routes.filter((route) => route.category === 'tools'),
-    info: routes.filter((route) => route.category === 'info'),
-    legal: routes.filter((route) => route.category === 'legal'),
+    tools: routes.filter((r) => r.category === 'tools'),
+    info: routes.filter((r) => r.category === 'info'),
+    legal: routes.filter((r) => r.category === 'legal'),
     all: routes,
   };
 };
 
-/**
- * Get routes for sitemap generation
- */
-export const getSitemapRoutes = () => {
-  return Object.values(ROUTE_CONFIG).filter(
-    (route) => !route.isWildcard && route.sitemap_priority !== undefined,
+export const getSitemapRoutes = () =>
+  Object.values(ROUTE_CONFIG).filter(
+    (r) => !r.isWildcard && r.sitemap_priority !== undefined,
   );
-};
 
-/**
- * Convert route config to React Router format
- */
-export const getRouterConfig = () => {
-  return Object.values(ROUTE_CONFIG);
-};
+export const getRouterConfig = () => Object.values(ROUTE_CONFIG);
 
-/**
- * Get route info for debugging/logging
- */
 export const getRouteInfo = (pathname) => {
   const route = getRouteByPath(pathname);
-
   return {
     path: pathname,
     route,
