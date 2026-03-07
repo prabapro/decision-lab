@@ -31,6 +31,13 @@ function HomeContent() {
 
   const handleStart = () => {
     if (!teamName.trim()) return;
+    // Mark this as an active browser session BEFORE navigating, so Play.jsx
+    // knows this is a fresh start — not a browser-reopen of a persisted game.
+    try {
+      sessionStorage.setItem('decision-lab-session', '1');
+    } catch {
+      /* ignore */
+    }
     startGame(teamName);
     navigate('/play');
   };

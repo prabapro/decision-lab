@@ -21,7 +21,7 @@ function TimerBar({ progress, timeLeft, phase, PHASE_META }) {
         {PHASE_META[phase].emoji} {PHASE_META[phase].label}
       </span>
       <div
-        className="flex-1 h-[3px] rounded-full overflow-hidden"
+        className="flex-1 h-0.75 rounded-full overflow-hidden"
         style={{ background: 'rgba(255,255,255,0.1)' }}>
         <div
           className="h-full rounded-full"
@@ -199,38 +199,45 @@ function ResumeDialog({ month, total, teamName, isResuming, onStart }) {
 // ---------------------------------------------------------------------------
 
 export default function Play() {
+  const currentMonth = useGameStore((s) => s.currentMonth);
   return (
     <GameGuard
       requiredStatus="playing"
       redirectMap={{ ended: '/results', idle: '/' }}>
-      <PlayContent />
+      {/* key=currentMonth forces a full remount on each new scenario,
+          so all useState initializers re-run correctly — no manual reset needed */}
+      <PlayContent key={currentMonth} />
     </GameGuard>
   );
 }
 
 function PlayContent() {
   const navigate = useNavigate();
-  const { currentMonth, teamName, recordDecision, pendingReveal } =
+  const { currentMonth, teamName, recordDecision, pendingReveal, decisionLog } =
     useGameStore();
   const scenario = scenarios[currentMonth - 1];
 
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [intelRevealed, setIntelRevealed] = useState([]);
-
-  // timerEnabled: false until the user dismisses the resume/ready dialog
-  const [timerEnabled, setTimerEnabled] = useState(false);
-
-  // Whether this mount is a browser-reopen mid-scenario (not a natural navigation)
-  // We detect this by checking if the store was persisted with a decision already in progress
-  // for this month, which isn't possible via normal flow — OR simply track it via sessionStorage
-  // so it resets on every new tab/session but survives React re-renders.
-  const isResuming = (() => {
+  // --- Resume state detection ---
+  // Three cases, resolved once on mount:
+  //   'none'     → fresh game month 1, no decisions yet → skip dialog, start immediately
+  //   'ready'    → natural scenario-to-scenario navigation (sessionStorage key present)
+  //   'resuming' → browser was closed and reopened mid-game (no sessionStorage key)
+  const dialogMode = (() => {
+    const isFreshStart = currentMonth === 1 && decisionLog.length === 0;
+    if (isFreshStart) return 'none';
     try {
-      return !sessionStorage.getItem('decision-lab-session');
+      return sessionStorage.getItem('decision-lab-session')
+        ? 'ready'
+        : 'resuming';
     } catch {
-      return false;
+      return 'resuming';
     }
   })();
+
+  // timerEnabled starts true only for fresh games; otherwise blocked until dialog dismissed
+  const [timerEnabled, setTimerEnabled] = useState(dialogMode === 'none');
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [intelRevealed, setIntelRevealed] = useState([]);
 
   // Guard: if pendingReveal is already true when Play mounts, the user closed
   // the tab after the timer fired but before clicking "Proceed". Send them
@@ -245,13 +252,13 @@ function PlayContent() {
   // (React StrictMode double-invokes effects in development)
   const hasDecided = useRef(false);
 
+  // Ref to avoid stale closure inside the timer callback
+  const selectedOptionRef = useRef(null);
+
   const handleSelectOption = (index) => {
     setSelectedOption(index);
     selectedOptionRef.current = index;
   };
-
-  // Ref to avoid stale closure inside the timer callback
-  const selectedOptionRef = useRef(null);
 
   const handleRevealIntel = (item) => {
     setIntelRevealed((prev) => [...prev, item]);
@@ -282,7 +289,6 @@ function PlayContent() {
     phase,
     timeLeft,
     progress,
-    reset,
     isPhase2,
     isPhase3,
     PHASE_META,
@@ -292,18 +298,7 @@ function PlayContent() {
     enabled: timerEnabled,
   });
 
-  // Reset all local state (including the double-fire guard) when scenario changes
-  useEffect(() => {
-    reset();
-    setSelectedOption(null);
-    setTimerEnabled(false);
-    selectedOptionRef.current = null;
-    hasDecided.current = false;
-    setIntelRevealed([]);
-  }, [currentMonth, reset]);
-
   const handleStart = () => {
-    // Mark this tab as an active session so future mounts know it's not a cold resume
     try {
       sessionStorage.setItem('decision-lab-session', '1');
     } catch {
@@ -316,13 +311,13 @@ function PlayContent() {
 
   return (
     <div className="min-h-screen py-10 px-4">
-      {/* Resume / ready dialog — blocks timer until dismissed */}
-      {!timerEnabled && (
+      {/* Resume / ready dialog — only shown when dialogMode is not 'none' */}
+      {!timerEnabled && dialogMode !== 'none' && (
         <ResumeDialog
           month={currentMonth}
           total={scenarios.length}
           teamName={teamName}
-          isResuming={isResuming}
+          isResuming={dialogMode === 'resuming'}
           onStart={handleStart}
         />
       )}
