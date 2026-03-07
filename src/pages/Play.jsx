@@ -21,7 +21,7 @@ function TimerBar({ progress, timeLeft, phase, PHASE_META }) {
         {PHASE_META[phase].emoji} {PHASE_META[phase].label}
       </span>
       <div
-        className="flex-1 h-0.75 rounded-full overflow-hidden"
+        className="flex-1 h-[3px] rounded-full overflow-hidden"
         style={{ background: 'rgba(255,255,255,0.1)' }}>
         <div
           className="h-full rounded-full"
@@ -132,6 +132,69 @@ function OptionsSection({ options, selectedOption, onSelect }) {
 }
 
 // ---------------------------------------------------------------------------
+// Resume dialog — shown before timer starts on every scenario load.
+// On a fresh session this acts as a "ready?" gate.
+// On a browser-reopen mid-scenario it warns the user they're resuming.
+// ---------------------------------------------------------------------------
+
+function ResumeDialog({ month, total, teamName, isResuming, onStart }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-6"
+      style={{
+        background: 'rgba(5, 7, 19, 0.85)',
+        backdropFilter: 'blur(8px)',
+      }}>
+      <div
+        className="w-full max-w-md text-center rounded-[28px] px-10 py-12"
+        style={{
+          background:
+            'linear-gradient(135deg, rgba(80,90,255,0.28), rgba(120,80,255,0.18))',
+          boxShadow: '0 0 60px rgba(120,120,255,0.3)',
+          border: '1px solid rgba(180,180,255,0.15)',
+        }}>
+        {isResuming && (
+          <p
+            className="text-xs tracking-widest uppercase mb-4 px-3 py-1 rounded-full inline-block"
+            style={{ background: 'rgba(255,211,107,0.15)', color: '#ffd36b' }}>
+            ⚠ Session Restored
+          </p>
+        )}
+
+        <h2 className="text-2xl font-black tracking-widest mb-2">
+          Scenario {month}{' '}
+          <span className="opacity-40 font-normal text-base">/ {total}</span>
+        </h2>
+
+        <p className="text-sm opacity-50 mb-8">
+          {isResuming
+            ? `Welcome back, ${teamName}. Your progress has been restored. The timer will start when you're ready.`
+            : `The timer starts the moment you begin. Make sure your team is ready.`}
+        </p>
+
+        <button
+          onClick={onStart}
+          className="px-12 py-3 rounded-full font-semibold tracking-widest text-white uppercase text-sm transition-all duration-300"
+          style={{
+            background: 'linear-gradient(135deg, #6f78ff, #c08bff)',
+            boxShadow: '0 0 14px rgba(160,160,255,0.35)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 0 22px rgba(190,190,255,0.55)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = '';
+            e.currentTarget.style.boxShadow = '0 0 14px rgba(160,160,255,0.35)';
+          }}>
+          {isResuming ? 'Resume' : 'Begin'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Main page (wrapped in GameGuard)
 // ---------------------------------------------------------------------------
 
@@ -147,29 +210,58 @@ export default function Play() {
 
 function PlayContent() {
   const navigate = useNavigate();
-  const { currentMonth, teamName, recordDecision } = useGameStore();
+  const { currentMonth, teamName, recordDecision, pendingReveal } =
+    useGameStore();
   const scenario = scenarios[currentMonth - 1];
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [intelRevealed, setIntelRevealed] = useState([]);
 
-  // Ref to avoid stale closure inside the timer callback
-  const selectedOptionRef = useRef(null);
+  // timerEnabled: false until the user dismisses the resume/ready dialog
+  const [timerEnabled, setTimerEnabled] = useState(false);
+
+  // Whether this mount is a browser-reopen mid-scenario (not a natural navigation)
+  // We detect this by checking if the store was persisted with a decision already in progress
+  // for this month, which isn't possible via normal flow — OR simply track it via sessionStorage
+  // so it resets on every new tab/session but survives React re-renders.
+  const isResuming = (() => {
+    try {
+      return !sessionStorage.getItem('decision-lab-session');
+    } catch {
+      return false;
+    }
+  })();
+
+  // Guard: if pendingReveal is already true when Play mounts, the user closed
+  // the tab after the timer fired but before clicking "Proceed". Send them
+  // straight back to the reveal for this month.
+  useEffect(() => {
+    if (pendingReveal) {
+      navigate('/reveal', { replace: true });
+    }
+  }, [pendingReveal, navigate]);
+
+  // Guard: prevent recordDecision from firing more than once per scenario
+  // (React StrictMode double-invokes effects in development)
+  const hasDecided = useRef(false);
 
   const handleSelectOption = (index) => {
     setSelectedOption(index);
     selectedOptionRef.current = index;
   };
 
+  // Ref to avoid stale closure inside the timer callback
+  const selectedOptionRef = useRef(null);
+
   const handleRevealIntel = (item) => {
     setIntelRevealed((prev) => [...prev, item]);
   };
 
-  /**
-   * Fired when phase 3 timer expires.
-   * Records the decision (or a 0-point default) and navigates to the reveal.
-   */
   const handlePhaseComplete = useCallback(() => {
+    // Block double-fire from StrictMode or any other re-invoke
+    if (hasDecided.current) return;
+    hasDecided.current = true;
+
     const idx = selectedOptionRef.current;
     const meta =
       idx !== null
@@ -195,20 +287,46 @@ function PlayContent() {
     isPhase3,
     PHASE_META,
     PHASE_DURATIONS,
-  } = usePhaseTimer({ onPhaseComplete: handlePhaseComplete, enabled: true });
+  } = usePhaseTimer({
+    onPhaseComplete: handlePhaseComplete,
+    enabled: timerEnabled,
+  });
 
-  // Reset timer and local state whenever the scenario changes
+  // Reset all local state (including the double-fire guard) when scenario changes
   useEffect(() => {
     reset();
     setSelectedOption(null);
+    setTimerEnabled(false);
     selectedOptionRef.current = null;
+    hasDecided.current = false;
     setIntelRevealed([]);
   }, [currentMonth, reset]);
 
-  if (!scenario) return null;
+  const handleStart = () => {
+    // Mark this tab as an active session so future mounts know it's not a cold resume
+    try {
+      sessionStorage.setItem('decision-lab-session', '1');
+    } catch {
+      /* ignore */
+    }
+    setTimerEnabled(true);
+  };
+
+  if (!scenario || pendingReveal) return null;
 
   return (
     <div className="min-h-screen py-10 px-4">
+      {/* Resume / ready dialog — blocks timer until dismissed */}
+      {!timerEnabled && (
+        <ResumeDialog
+          month={currentMonth}
+          total={scenarios.length}
+          teamName={teamName}
+          isResuming={isResuming}
+          onStart={handleStart}
+        />
+      )}
+
       <div
         className="max-w-3xl mx-auto rounded-[34px] px-8 py-10"
         style={{

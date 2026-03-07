@@ -15,6 +15,7 @@ const INITIAL_GAME_STATE = {
   regretCount: 0,
   redemptionCount: 0,
   gameStatus: 'idle', // 'idle' | 'playing' | 'ended'
+  pendingReveal: false, // true while the reveal for the current month hasn't been acknowledged
 };
 
 export const useGameStore = create()(
@@ -63,6 +64,7 @@ export const useGameStore = create()(
             regretCount: meta.points === 0 ? regretCount + 1 : regretCount,
             redemptionCount:
               meta.points >= 7 ? redemptionCount + 1 : redemptionCount,
+            pendingReveal: true,
           });
         },
 
@@ -75,11 +77,11 @@ export const useGameStore = create()(
           const next = currentMonth + 1;
 
           if (next > totalScenarios) {
-            set({ gameStatus: 'ended' });
+            set({ gameStatus: 'ended', pendingReveal: false });
             return 'ended';
           }
 
-          set({ currentMonth: next });
+          set({ currentMonth: next, pendingReveal: false });
           return 'playing';
         },
 
