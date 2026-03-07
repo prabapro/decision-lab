@@ -86,8 +86,10 @@ function RevealSection({ title, content, highlight, animationDelay }) {
 // ---------------------------------------------------------------------------
 
 export default function Reveal() {
+  // Allow 'ended' too — advanceMonth sets it before navigate('/results') fires,
+  // so without this the GameGuard would redirect back to '/' and lose the results.
   return (
-    <GameGuard requiredStatus="playing">
+    <GameGuard requiredStatus={['playing', 'ended']}>
       <RevealContent />
     </GameGuard>
   );

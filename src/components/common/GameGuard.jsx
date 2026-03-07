@@ -8,11 +8,10 @@ import { useGameStore } from '@stores/useGameStore';
  * Protects game routes by checking the current game status.
  *
  * Usage:
- *   <GameGuard requiredStatus="playing">
- *     <PlayContent />
- *   </GameGuard>
+ *   <GameGuard requiredStatus="playing">          // single status
+ *   <GameGuard requiredStatus={['playing', 'ended']}> // multiple valid statuses
  *
- * If gameStatus !== requiredStatus, redirects to `redirectTo` (default: '/').
+ * If gameStatus is not in the allowed set, redirects to `redirectTo` (default: '/').
  */
 export default function GameGuard({
   children,
@@ -22,14 +21,18 @@ export default function GameGuard({
   const navigate = useNavigate();
   const gameStatus = useGameStore((s) => s.gameStatus);
 
+  const allowed = Array.isArray(requiredStatus)
+    ? requiredStatus
+    : [requiredStatus];
+  const isAllowed = allowed.includes(gameStatus);
+
   useEffect(() => {
-    if (gameStatus !== requiredStatus) {
+    if (!isAllowed) {
       navigate(redirectTo, { replace: true });
     }
-  }, [gameStatus, requiredStatus, redirectTo, navigate]);
+  }, [isAllowed, redirectTo, navigate]);
 
-  // Render nothing while redirecting to avoid flash of wrong content
-  if (gameStatus !== requiredStatus) return null;
+  if (!isAllowed) return null;
 
   return <>{children}</>;
 }
