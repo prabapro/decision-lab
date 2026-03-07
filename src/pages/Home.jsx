@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@stores/useGameStore';
+import GameGuard from '@components/common/GameGuard';
 
 const INTRO_LINES = [
   'You are about to enter a high-stakes decision laboratory.',
@@ -12,6 +13,18 @@ const INTRO_LINES = [
 ];
 
 export default function Home() {
+  return (
+    // Only idle users should see the welcome screen.
+    // playing → resume at /play | ended → go to /results
+    <GameGuard
+      requiredStatus="idle"
+      redirectMap={{ playing: '/play', ended: '/results' }}>
+      <HomeContent />
+    </GameGuard>
+  );
+}
+
+function HomeContent() {
   const [teamName, setTeamName] = useState('');
   const navigate = useNavigate();
   const startGame = useGameStore((s) => s.startGame);

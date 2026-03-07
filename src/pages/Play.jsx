@@ -137,7 +137,9 @@ function OptionsSection({ options, selectedOption, onSelect }) {
 
 export default function Play() {
   return (
-    <GameGuard requiredStatus="playing">
+    <GameGuard
+      requiredStatus="playing"
+      redirectMap={{ ended: '/results', idle: '/' }}>
       <PlayContent />
     </GameGuard>
   );

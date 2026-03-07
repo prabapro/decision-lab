@@ -7,16 +7,25 @@ import { useGameStore } from '@stores/useGameStore';
 /**
  * Protects game routes by checking the current game status.
  *
- * Usage:
- *   <GameGuard requiredStatus="playing">          // single status
- *   <GameGuard requiredStatus={['playing', 'ended']}> // multiple valid statuses
+ * Props:
+ *   requiredStatus  — string or string[] of statuses allowed to view this route
+ *   redirectTo      — fallback redirect path if no redirectMap match (default: '/')
+ *   redirectMap     — object mapping specific statuses to redirect paths, e.g:
+ *                     { playing: '/play', ended: '/results' }
+ *                     Checked before redirectTo.
  *
- * If gameStatus is not in the allowed set, redirects to `redirectTo` (default: '/').
+ * Examples:
+ *   // Only idle users can see Home; resume to the right screen otherwise
+ *   <GameGuard requiredStatus="idle" redirectMap={{ playing: '/play', ended: '/results' }}>
+ *
+ *   // Only playing users can see Play; send ended users straight to results
+ *   <GameGuard requiredStatus="playing" redirectMap={{ ended: '/results' }}>
  */
 export default function GameGuard({
   children,
   requiredStatus,
   redirectTo = '/',
+  redirectMap = {},
 }) {
   const navigate = useNavigate();
   const gameStatus = useGameStore((s) => s.gameStatus);
@@ -26,11 +35,14 @@ export default function GameGuard({
     : [requiredStatus];
   const isAllowed = allowed.includes(gameStatus);
 
+  // Per-status redirect takes priority over the generic fallback
+  const destination = redirectMap[gameStatus] ?? redirectTo;
+
   useEffect(() => {
     if (!isAllowed) {
-      navigate(redirectTo, { replace: true });
+      navigate(destination, { replace: true });
     }
-  }, [isAllowed, redirectTo, navigate]);
+  }, [isAllowed, destination, navigate]);
 
   if (!isAllowed) return null;
 

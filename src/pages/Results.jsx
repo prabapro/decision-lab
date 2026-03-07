@@ -105,7 +105,9 @@ function ResetConfirm({ onConfirm, onCancel }) {
 
 export default function Results() {
   return (
-    <GameGuard requiredStatus="ended">
+    <GameGuard
+      requiredStatus="ended"
+      redirectMap={{ playing: '/play', idle: '/' }}>
       <ResultsContent />
     </GameGuard>
   );
