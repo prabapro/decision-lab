@@ -1,0 +1,52 @@
+# netlify.toml
+
+[build]
+command = "pnpm build"
+publish = "dist"
+# Skip builds when changes are exclusively in root/*.md files or /doc directory
+ignore = """
+    if [ "$CACHED_COMMIT_REF" != "" ]; then
+        # Directories to ignore (will ignore all contents within)
+        IGNORE_DIRS="^(docs/.*|scripts/.*|src/test/.*|tools/.*)$"
+
+        # Root files to ignore
+        IGNORE_FILES="^([^/]+\\.md|\\.env\\.vault|netlify\\.toml|package\\.json|pnpm-lock\\.yaml|\\.gitignore)$"
+
+        # Combine patterns
+        IGNORE_PATTERN="$IGNORE_DIRS|$IGNORE_FILES"
+
+        changes=$(git diff --name-only "$CACHED_COMMIT_REF" "$COMMIT_REF")
+        echo "Changes detected in: $changes"
+
+        # Check if there are any changes outside of ignored paths
+        if echo "$changes" | grep -qvE "$IGNORE_PATTERN"; then
+            echo "🚀 Found changes in application files - proceeding with build 🥳"
+            exit 1
+        else
+            echo "💡Only documentation or utility changes detected - skipping build 🏃‍♂️"
+            exit 0
+        fi
+    fi
+    echo "🚀 First deployment or no previous cache - proceeding with build 🥳"
+    exit 1
+    """
+
+[build.processing]
+skip_processing = false
+[build.processing.css]
+bundle = true
+minify = true
+[build.processing.js]
+bundle = true
+minify = true
+[build.processing.html]
+pretty_urls = true
+[build.processing.images]
+compress = true
+
+# SPA routes
+
+[[redirects]]
+from = "/*"
+status = 200
+to = "/"
