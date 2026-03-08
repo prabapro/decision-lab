@@ -40,9 +40,9 @@ export default function Footer() {
             {/* Footer Links */}
             <div className="flex items-center space-x-8 text-sm md:text-sm">
               <Link
-                to="/terms"
+                to="/help"
                 className="text-muted-foreground/70 hover:text-foreground transition-colors duration-200 hover:underline decoration-dotted underline-offset-4">
-                Terms
+                Help
               </Link>
             </div>
           </div>

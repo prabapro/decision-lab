@@ -1,4 +1,4 @@
-// src/pages/Terms.jsx
+// src/pages/Help.jsx
 
 import ReactMarkdown from 'react-markdown';
 import { Card, CardContent } from '@components/ui/card';
@@ -11,17 +11,17 @@ import {
   PageHeader,
   PageFooter,
 } from '@components/common/MarkdownRenderer';
-import termsContent from '@data/terms.md?raw';
+import helpContent from '@data/help.md?raw';
 
-export default function Terms() {
+export default function Help() {
   const { lastUpdated, isLoading, components, proseClasses } =
-    useMarkdownContent(termsContent);
+    useMarkdownContent(helpContent);
 
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <LoadingSpinner size="lg" text="Loading Terms of Service..." />
+        <div className="flex items-center justify-center min-h-100">
+          <LoadingSpinner size="lg" text="Loading Help of Service..." />
         </div>
       </div>
     );
@@ -41,8 +41,8 @@ export default function Terms() {
 
       {/* Header */}
       <PageHeader
-        title="Terms of Service"
-        description="Please read these terms carefully before using XXX. By using our service, you agree to these terms."
+        title="Help & Support"
+        description="Find answers to common questions and get support for using our platform."
         icon={Scale}
         lastUpdated={lastUpdated}
       />
@@ -51,16 +51,14 @@ export default function Terms() {
       <Card className="shadow-sm">
         <CardContent className="p-8">
           <div className={proseClasses}>
-            <ReactMarkdown components={components}>
-              {termsContent}
-            </ReactMarkdown>
+            <ReactMarkdown components={components}>{helpContent}</ReactMarkdown>
           </div>
         </CardContent>
       </Card>
 
       {/* Footer Actions */}
       <PageFooter
-        text="Need clarification on our terms?"
+        text="Need clarification on our Help?"
         buttonText="Contact Us"
         buttonLink="/contact"
         icon={FileText}

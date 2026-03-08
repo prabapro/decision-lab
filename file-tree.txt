@@ -32,6 +32,7 @@
 │   │   ├── constants.js
 │   │   └── routes.js
 │   ├── data
+│   │   ├── help.md
 │   │   └── scenarios.yaml
 │   ├── hooks
 │   │   ├── usePhaseTimer.js
@@ -39,12 +40,12 @@
 │   ├── lib
 │   │   └── utils.js
 │   ├── pages
+│   │   ├── Help.jsx
 │   │   ├── Home.jsx
 │   │   ├── NotFound.jsx
 │   │   ├── Play.jsx
 │   │   ├── Results.jsx
-│   │   ├── Reveal.jsx
-│   │   └── Terms.jsx
+│   │   └── Reveal.jsx
 │   ├── routes
 │   │   └── AppRouter.jsx
 │   ├── stores
