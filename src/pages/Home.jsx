@@ -17,21 +17,19 @@ import { ArrowRight, ShieldAlert } from 'lucide-react';
 function ClassifiedBriefing() {
   return (
     <div className="border border-accent-foreground/25 rounded-lg bg-accent-foreground/5 overflow-hidden">
-      {/* Header bar */}
+      {/* Header bar — game-label token */}
       <div className="flex items-center gap-2 px-4 py-2.5 border-b border-accent-foreground/20 bg-accent-foreground/8">
         <ShieldAlert className="w-3.5 h-3.5 text-accent-foreground shrink-0" />
-        <span className="text-sm font-black tracking-[0.25em] uppercase text-accent-foreground select-none">
+        <span className="game-label font-black text-accent-foreground select-none">
           Classified Briefing
         </span>
       </div>
 
-      {/* Lines */}
+      {/* Lines — game-body token (text-base leading-relaxed) */}
       <div className="px-4 py-4 space-y-3">
         {INTRO_LINES.map((line, i) => (
-          <p
-            key={i}
-            className="text-sm leading-relaxed text-foreground/70 flex gap-2.5">
-            <span className="text-accent-foreground/60 mt-0.5 shrink-0 font-bold select-none">
+          <p key={i} className="game-body text-foreground/70 flex gap-2.5">
+            <span className="text-accent-foreground/60 mt-0.5 shrink-0 font-bold select-none text-sm">
               {String(i + 1).padStart(2, '0')}
             </span>
             {line}
@@ -39,7 +37,7 @@ function ClassifiedBriefing() {
         ))}
 
         {/* Redacted footer line */}
-        <p className="italic text-muted-foreground/40 text-xs pt-1 border-t border-accent-foreground/10 mt-2">
+        <p className="italic text-muted-foreground/40 text-sm pt-1 border-t border-accent-foreground/10 mt-2">
           Every decision leaves a fingerprint on history.
         </p>
       </div>
@@ -95,8 +93,8 @@ function HomeContent() {
           />
         </div>
 
-        {/* ── Eyebrow label ───────────────────────────────────────────── */}
-        <p className="text-center text-xs font-semibold tracking-[0.3em] uppercase text-accent-foreground mb-6">
+        {/* ── Eyebrow label — game-label token ───────────────────────── */}
+        <p className="text-center game-label text-accent-foreground mb-6">
           Leadership Simulation
         </p>
 
@@ -105,7 +103,8 @@ function HomeContent() {
           <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-foreground">
             The Decision Lab
           </h1>
-          <p className="text-muted-foreground text-sm sm:text-base tracking-wide">
+          {/* game-body token for subtitle */}
+          <p className="game-body text-muted-foreground tracking-wide">
             Where futures are shaped by choices.
           </p>
         </div>

@@ -23,7 +23,7 @@ function StatTile({ label, value }) {
   return (
     <div className="flex flex-col items-center px-6 py-4 rounded-xl bg-muted/40 border border-border/40 font-game flex-1">
       <span className="text-2xl font-bold text-foreground">{value}</span>
-      <span className="text-[10px] tracking-widest uppercase text-muted-foreground mt-1">
+      <span className="game-badge-text text-muted-foreground mt-1">
         {label}
       </span>
     </div>
@@ -33,7 +33,8 @@ function StatTile({ label, value }) {
 function ResetConfirm({ onConfirm, onCancel }) {
   return (
     <div className="space-y-4 font-game">
-      <p className="text-sm text-muted-foreground text-center">
+      {/* game-body token */}
+      <p className="game-body text-muted-foreground text-center">
         This will erase all progress. Are you sure?
       </p>
       <div className="flex gap-3 justify-center">
@@ -59,8 +60,7 @@ function ResetConfirm({ onConfirm, onCancel }) {
 
 /**
  * Renders the narrative string as individual paragraphs, each preceded by
- * a small accent bullet. Empty lines in the whitespace-split are skipped
- * so the double-newlines in buildNarrative become natural visual gaps.
+ * a small accent bullet.
  */
 function NarrativeBlock({ text }) {
   const paragraphs = text
@@ -73,18 +73,17 @@ function NarrativeBlock({ text }) {
       {/* Header */}
       <div className="flex items-center gap-2 px-4 py-2.5 border-b border-accent-foreground/15 bg-accent-foreground/8">
         <ShieldAlert className="w-3.5 h-3.5 text-accent-foreground shrink-0" />
-        <span className="text-[10px] font-black tracking-[0.25em] uppercase text-accent-foreground select-none">
+        {/* game-badge-text token (was text-[10px] tracking-[0.25em] uppercase) */}
+        <span className="game-badge-text font-black text-accent-foreground select-none">
           Leadership Assessment
         </span>
       </div>
 
-      {/* Paragraphs */}
+      {/* Paragraphs — game-body token */}
       <div className="px-5 py-5 space-y-3">
         {paragraphs.map((para, i) => (
-          <p
-            key={i}
-            className="text-sm leading-relaxed text-foreground/70 flex gap-3">
-            <span className="text-accent-foreground/50 mt-0.5 shrink-0 font-bold select-none text-xs">
+          <p key={i} className="game-body text-foreground/70 flex gap-3">
+            <span className="text-accent-foreground/50 mt-0.5 shrink-0 font-bold select-none text-sm">
               {String(i + 1).padStart(2, '0')}
             </span>
             {para}
@@ -148,21 +147,19 @@ function ResultsContent() {
         innerClassName="p-8 sm:p-12 space-y-8">
         {/* ── Aura / Identity ──────────────────────────────────────────── */}
         <div className="text-center space-y-4">
-          {/* Eyebrow */}
-          <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground font-semibold">
-            Leadership Aura
-          </p>
+          {/* Eyebrow — game-label token */}
+          <p className="game-label text-muted-foreground">Leadership Aura</p>
 
           {/* Aura name */}
           <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-game-accent">
             {aura.name}
           </h2>
 
-          {/* Identity badge */}
+          {/* Identity badge — game-badge-text token */}
           <div className="flex justify-center">
             <Badge
               variant="outline"
-              className="border-game-accent/30 text-game-accent bg-game-accent/10 text-xs tracking-widest uppercase font-semibold font-game px-4 py-1">
+              className="border-game-accent/30 text-game-accent bg-game-accent/10 game-badge-text font-game px-4 py-1">
               <Trophy className="w-3 h-3 mr-1.5" />
               {identity}
             </Badge>

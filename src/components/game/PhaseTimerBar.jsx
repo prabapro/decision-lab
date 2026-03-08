@@ -25,17 +25,17 @@ export default function PhaseTimerBar({ phase, timeLeft, progress }) {
 
   return (
     <div className="flex items-center gap-3 font-game">
-      {/* Phase label */}
+      {/* Phase label — game-label token (text-sm tracking-widest uppercase) */}
       <span
         className={cn(
-          'text-xs tracking-widest uppercase whitespace-nowrap font-semibold shrink-0',
+          'game-label whitespace-nowrap shrink-0',
           isUrgent ? 'text-destructive' : 'text-muted-foreground',
         )}>
         {meta.emoji} <span className="hidden sm:inline">{meta.label}</span>
       </span>
 
       {/* Progress track */}
-      <div className="flex-1 h-1 rounded-full bg-border overflow-hidden">
+      <div className="flex-1 h-1.5 rounded-full bg-border overflow-hidden">
         <div
           className={cn('h-full rounded-full', trackColor)}
           style={{
@@ -45,10 +45,10 @@ export default function PhaseTimerBar({ phase, timeLeft, progress }) {
         />
       </div>
 
-      {/* Countdown */}
+      {/* Countdown — bumped from text-xs to text-sm */}
       <span
         className={cn(
-          'text-xs font-mono w-8 text-right tabular-nums font-semibold shrink-0',
+          'text-sm font-mono w-9 text-right tabular-nums font-semibold shrink-0',
           isUrgent ? 'text-destructive' : 'text-muted-foreground',
         )}>
         {timeLeft}s

@@ -175,6 +175,37 @@
   .animate-logo-spin-slow {
     animation: logo-spin-slow 24s linear infinite;
   }
+
+  /* ── Game typography utilities ──────────────────────────────────────────
+   *
+   * Four tokens cover every text pattern across game screens.
+   * Update sizes here to affect all game pages and components at once.
+   *
+   * game-label      — uppercase section/phase labels (was text-xs)
+   * game-badge-text — pill/badge text (was text-[10px])
+   * game-body       — readable body / narrative copy (was text-sm)
+   * game-narrative  — preformatted scenario/reveal blocks (was text-sm)
+   * ────────────────────────────────────────────────────────────────────── */
+
+  /* Uppercase labels: phase names, section headings, eyebrow text */
+  .game-label {
+    @apply text-sm font-semibold tracking-widest uppercase;
+  }
+
+  /* Badge / pill text: status badges, counter badges */
+  .game-badge-text {
+    @apply text-xs font-semibold tracking-widest uppercase;
+  }
+
+  /* General body copy: briefing lines, revealed intel, option text, messages */
+  .game-body {
+    @apply text-base leading-relaxed;
+  }
+
+  /* Narrative / reveal blocks: preserves whitespace, generous line-height */
+  .game-narrative {
+    @apply text-base leading-[1.9] whitespace-pre-line;
+  }
 }
 
 @keyframes border-spin {

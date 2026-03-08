@@ -14,12 +14,10 @@ import { cn } from '@/lib/utils';
 export default function OptionsSection({ options, selectedOption, onSelect }) {
   return (
     <div className="space-y-4 font-game">
-      {/* Header */}
-      <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
-        Select Your Decision
-      </p>
+      {/* Header — game-label token */}
+      <p className="game-label text-muted-foreground">Select Your Decision</p>
 
-      {/* Option buttons */}
+      {/* Option buttons — game-body token for option text */}
       <div className="space-y-2.5">
         {options.map((opt, i) => {
           const isSelected = selectedOption === i;
@@ -38,7 +36,7 @@ export default function OptionsSection({ options, selectedOption, onSelect }) {
               {/* Radio indicator */}
               <div
                 className={cn(
-                  'mt-0.5 shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all duration-200',
+                  'mt-1 shrink-0 w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all duration-200',
                   isSelected
                     ? 'border-primary-foreground'
                     : 'border-muted-foreground/40 group-hover:border-foreground/60',
@@ -48,8 +46,8 @@ export default function OptionsSection({ options, selectedOption, onSelect }) {
                 )}
               </div>
 
-              {/* Option text */}
-              <span className="text-sm leading-relaxed">{opt.text}</span>
+              {/* Option text — game-body token (text-base leading-relaxed) */}
+              <span className="game-body">{opt.text}</span>
             </button>
           );
         })}
