@@ -116,8 +116,10 @@ export const generateLeadershipProfile = (
 
 /**
  * Builds the multi-line narrative paragraph shown on the Results page.
+ * Stats (stress, score) are intentionally excluded here — they are rendered
+ * as dedicated UI elements in Results.jsx instead.
  *
- * @param {{ aura: object, systemStress: number, regretCount: number, redemptionCount: number, totalScore: number, scenarioCount: number }} opts
+ * @param {{ aura: object, systemStress: number, regretCount: number, redemptionCount: number }} opts
  * @returns {string}
  */
 export const buildNarrative = ({
@@ -125,8 +127,6 @@ export const buildNarrative = ({
   systemStress,
   regretCount,
   redemptionCount,
-  totalScore,
-  scenarioCount,
 }) => {
   let text = aura.tone;
 
@@ -143,6 +143,5 @@ export const buildNarrative = ({
       '\n\nYou demonstrated redemption by correcting early mistakes through decisive late leadership.';
   }
 
-  text += `\n\nFinal System Stress: ${systemStress}\nTotal Score: ${totalScore} / ${scenarioCount * 10}`;
   return text;
 };

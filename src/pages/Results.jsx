@@ -10,20 +10,20 @@ import {
   buildNarrative,
 } from '@utils/scoreUtils';
 import GameGuard from '@components/common/GameGuard';
+import AnimatedBorderCard from '@components/common/AnimatedBorderCard';
 import { Button } from '@components/ui/button';
-import { Card, CardContent } from '@components/ui/card';
 import { Badge } from '@components/ui/badge';
-import { RotateCcw, Trophy } from 'lucide-react';
+import { RotateCcw, Trophy, ShieldAlert } from 'lucide-react';
 
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
 
-function StatPill({ label, value }) {
+function StatTile({ label, value }) {
   return (
-    <div className="flex flex-col items-center px-5 py-3 rounded-xl bg-muted/40 border border-border/40 font-game min-w-18">
-      <span className="text-xl font-bold text-foreground">{value}</span>
-      <span className="text-[10px] tracking-widest uppercase text-muted-foreground mt-0.5">
+    <div className="flex flex-col items-center px-6 py-4 rounded-xl bg-muted/40 border border-border/40 font-game flex-1">
+      <span className="text-2xl font-bold text-foreground">{value}</span>
+      <span className="text-[10px] tracking-widest uppercase text-muted-foreground mt-1">
         {label}
       </span>
     </div>
@@ -57,8 +57,46 @@ function ResetConfirm({ onConfirm, onCancel }) {
   );
 }
 
+/**
+ * Renders the narrative string as individual paragraphs, each preceded by
+ * a small accent bullet. Empty lines in the whitespace-split are skipped
+ * so the double-newlines in buildNarrative become natural visual gaps.
+ */
+function NarrativeBlock({ text }) {
+  const paragraphs = text
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  return (
+    <div className="border border-accent-foreground/20 rounded-lg bg-accent-foreground/5 overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-accent-foreground/15 bg-accent-foreground/8">
+        <ShieldAlert className="w-3.5 h-3.5 text-accent-foreground shrink-0" />
+        <span className="text-[10px] font-black tracking-[0.25em] uppercase text-accent-foreground select-none">
+          Leadership Assessment
+        </span>
+      </div>
+
+      {/* Paragraphs */}
+      <div className="px-5 py-5 space-y-3">
+        {paragraphs.map((para, i) => (
+          <p
+            key={i}
+            className="text-sm leading-relaxed text-foreground/70 flex gap-3">
+            <span className="text-accent-foreground/50 mt-0.5 shrink-0 font-bold select-none text-xs">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            {para}
+          </p>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
-// Main page (wrapped in GameGuard)
+// Main page
 // ---------------------------------------------------------------------------
 
 export default function Results() {
@@ -74,7 +112,6 @@ export default function Results() {
 function ResultsContent() {
   const navigate = useNavigate();
   const {
-    teamName,
     totalScore,
     decisionLog,
     systemStress,
@@ -85,6 +122,7 @@ function ResultsContent() {
 
   const [confirmReset, setConfirmReset] = useState(false);
 
+  const scenarioCount = scenarios.length;
   const aura = getAuraTier(totalScore);
   const identity = generateLeadershipProfile(
     decisionLog,
@@ -96,8 +134,6 @@ function ResultsContent() {
     systemStress,
     regretCount,
     redemptionCount,
-    totalScore,
-    scenarioCount: scenarios.length,
   });
 
   const handleReset = () => {
@@ -106,17 +142,19 @@ function ResultsContent() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 max-w-2xl font-game">
-      {/* ── Aura / Identity card ─────────────────────────────────────────── */}
-      <Card className="mb-6 shadow-lg border-game-accent/20 bg-game-accent/5">
-        <CardContent className="p-8 sm:p-10 text-center space-y-4">
+    <div className="flex-1 flex items-center justify-center p-6 font-game">
+      <AnimatedBorderCard
+        className="w-full max-w-6xl shadow-2xl"
+        innerClassName="p-8 sm:p-12 space-y-8">
+        {/* ── Aura / Identity ──────────────────────────────────────────── */}
+        <div className="text-center space-y-4">
           {/* Eyebrow */}
           <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground font-semibold">
-            Your Leadership Aura
+            Leadership Aura
           </p>
 
           {/* Aura name */}
-          <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-game-accent">
+          <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-game-accent">
             {aura.name}
           </h2>
 
@@ -129,58 +167,42 @@ function ResultsContent() {
               {identity}
             </Badge>
           </div>
+        </div>
 
-          {/* Divider */}
-          <div className="h-px bg-border/40 my-2" />
-
-          {/* Narrative */}
-          <p className="text-sm leading-[1.9] whitespace-pre-line text-foreground/70 text-left">
-            {narrative}
-          </p>
-        </CardContent>
-      </Card>
-
-      {/* ── Stats row ───────────────────────────────────────────────────── */}
-      <div className="flex justify-center gap-3 mb-6">
-        <StatPill label="Score" value={totalScore} />
-        <StatPill label="Stress" value={systemStress} />
-        <StatPill label="Months" value={decisionLog.length} />
-      </div>
-
-      {/* ── Scoreboard card ──────────────────────────────────────────────── */}
-      <Card className="mb-6 border-border/40 shadow-sm">
-        <CardContent className="p-5 sm:p-6">
-          <p className="text-xs tracking-widest uppercase text-muted-foreground/60 mb-3 font-semibold font-game">
-            Final Scoreboard
-          </p>
-          <div className="flex items-baseline gap-2">
-            <span className="text-lg font-bold text-foreground">
-              {teamName}
-            </span>
-            <span className="text-muted-foreground text-sm">
-              — {totalScore} pts
-            </span>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* ── Play again / Reset ───────────────────────────────────────────── */}
-      <div className="flex justify-center">
-        {confirmReset ? (
-          <ResetConfirm
-            onConfirm={handleReset}
-            onCancel={() => setConfirmReset(false)}
+        {/* ── Stats row ────────────────────────────────────────────────── */}
+        <div className="flex gap-3">
+          <StatTile
+            label="Score"
+            value={`${totalScore} / ${scenarioCount * 10}`}
           />
-        ) : (
-          <Button
-            size="lg"
-            onClick={() => setConfirmReset(true)}
-            className="gap-2 font-semibold tracking-widest uppercase text-sm font-game px-10">
-            <RotateCcw className="w-4 h-4" />
-            Play Again
-          </Button>
-        )}
-      </div>
+          <StatTile label="Sys. Stress" value={systemStress} />
+          <StatTile label="Months" value={decisionLog.length} />
+        </div>
+
+        {/* ── Divider ──────────────────────────────────────────────────── */}
+        <div className="h-px bg-border/40" />
+
+        {/* ── Narrative ────────────────────────────────────────────────── */}
+        <NarrativeBlock text={narrative} />
+
+        {/* ── Play again / Reset ───────────────────────────────────────── */}
+        <div className="flex justify-center pt-2">
+          {confirmReset ? (
+            <ResetConfirm
+              onConfirm={handleReset}
+              onCancel={() => setConfirmReset(false)}
+            />
+          ) : (
+            <Button
+              size="lg"
+              onClick={() => setConfirmReset(true)}
+              className="gap-2 font-semibold tracking-widest uppercase text-sm font-game px-10">
+              <RotateCcw className="w-4 h-4" />
+              Play Again
+            </Button>
+          )}
+        </div>
+      </AnimatedBorderCard>
     </div>
   );
 }
