@@ -10,8 +10,7 @@ import { lazy } from 'react';
 
 // Lazy-load all page components
 const Home = lazy(() => import('@pages/Home'));
-const Privacy = lazy(() => import('@pages/Privacy'));
-const Terms = lazy(() => import('@pages/Terms'));
+const Help = lazy(() => import('@pages/Help'));
 const NotFound = lazy(() => import('@pages/NotFound'));
 const Play = lazy(() => import('@pages/Play'));
 const Reveal = lazy(() => import('@pages/Reveal'));
@@ -59,24 +58,15 @@ export const ROUTE_CONFIG = {
   // -------------------------------------------------------------------------
   // Standard routes — rendered inside Layout with header/footer
   // -------------------------------------------------------------------------
-  PRIVACY: {
-    path: '/privacy',
-    component: Privacy,
-    title: 'Privacy Policy',
-    description: 'How we protect and handle your data',
-    showInNav: false,
-    category: 'legal',
-    sitemap_priority: 0.5,
-    sitemap_changefreq: 'monthly',
-  },
 
-  TERMS: {
-    path: '/terms',
-    component: Terms,
-    title: 'Terms of Service',
-    description: 'Terms and conditions for using the app',
+  HELP: {
+    path: '/help',
+    component: Help,
+    title: 'Help & Support',
+    description:
+      'Find answers to common questions and get support for using our platform.',
     showInNav: false,
-    category: 'legal',
+    category: 'support',
     sitemap_priority: 0.5,
     sitemap_changefreq: 'monthly',
   },

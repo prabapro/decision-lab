@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@stores/useGameStore';
 import { usePhaseTimer } from '@hooks/usePhaseTimer';
-import { scenarios } from '@data/scenarios';
+import { scenarios } from '@config/constants';
 import GameGuard from '@components/common/GameGuard';
 
 // ---------------------------------------------------------------------------

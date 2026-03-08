@@ -117,7 +117,7 @@ function AppRoutes() {
 
       {/*
        * Standard routes — rendered inside Layout (header + footer).
-       * Covers: /privacy, /terms, * (404)
+       * Covers: /help, * (404)
        */}
       <Route element={<StandardLayoutWrapper />}>
         {standardRoutes.map(buildRoute)}

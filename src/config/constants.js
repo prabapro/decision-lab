@@ -1,5 +1,13 @@
 // src/config/constants.js
 
+import data from '@data/scenarios.yaml';
+
+// ---------------------------------------------------------------------------
+// Scenarios — sourced from src/data/scenarios.yaml
+// ---------------------------------------------------------------------------
+
+export const scenarios = data.scenarios;
+
 // ---------------------------------------------------------------------------
 // Aura Tiers — used in Results.jsx to map total score to a leadership label
 // ---------------------------------------------------------------------------
