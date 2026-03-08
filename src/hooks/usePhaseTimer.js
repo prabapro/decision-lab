@@ -7,18 +7,7 @@ import {
   useCallback,
   useLayoutEffect,
 } from 'react';
-
-export const PHASE_DURATIONS = {
-  1: 5, // default: 90
-  2: 3, // default: 30
-  3: 2, // default: 25
-};
-
-export const PHASE_META = {
-  1: { emoji: '📖', label: 'Read Case' },
-  2: { emoji: '🧠', label: 'Gather Intel' },
-  3: { emoji: '⚡', label: 'Decide Now' },
-};
+import { PHASE_DURATIONS, PHASE_META } from '@config/constants';
 
 /**
  * Manages the three-phase countdown timer for each scenario.

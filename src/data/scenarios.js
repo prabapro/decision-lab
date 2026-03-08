@@ -1,40 +1,5 @@
 // src/data/scenarios.js
 
-export const AURA_TIERS = [
-  {
-    min: 110,
-    name: 'AURA OF LEGEND',
-    tone: 'You led through collapse-level pressure and stabilized a failing system.',
-  },
-  {
-    min: 90,
-    name: 'AURA OF MASTERY',
-    tone: 'You absorbed pain early and preserved long-term stability.',
-  },
-  {
-    min: 70,
-    name: 'AURA OF VISION',
-    tone: 'You balanced ethics and realism under pressure.',
-  },
-  {
-    min: 50,
-    name: 'AURA OF PRAGMATISM',
-    tone: 'You avoided catastrophe but paid avoidable costs.',
-  },
-  {
-    min: 30,
-    name: 'AURA OF SURVIVAL',
-    tone: 'You barely kept the system alive.',
-  },
-  {
-    min: 0,
-    name: 'AURA OF COLLAPSE',
-    tone: 'You repeated denial, delay, and ideological errors.',
-  },
-];
-
-export const HIGH_IMPACT_MONTHS = [2, 3, 4, 10, 11, 12];
-
 export const scenarios = [
   {
     month: 1,
