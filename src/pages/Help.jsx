@@ -9,7 +9,6 @@ import LoadingSpinner from '@components/common/LoadingSpinner';
 import {
   useMarkdownContent,
   PageHeader,
-  PageFooter,
 } from '@components/common/MarkdownRenderer';
 import helpContent from '@data/help.md?raw';
 
@@ -55,14 +54,6 @@ export default function Help() {
           </div>
         </CardContent>
       </Card>
-
-      {/* Footer Actions */}
-      <PageFooter
-        text="Need clarification on our Help?"
-        buttonText="Contact Us"
-        buttonLink="/contact"
-        icon={FileText}
-      />
     </div>
   );
 }
