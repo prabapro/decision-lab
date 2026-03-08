@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@stores/useGameStore';
 import { INTRO_LINES } from '@config/constants';
 import GameGuard from '@components/common/GameGuard';
+import { Button } from '@components/ui/button';
+import { Card, CardContent } from '@components/ui/card';
+import { Input } from '@components/ui/input';
+import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -36,83 +40,62 @@ function HomeContent() {
     navigate('/play');
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') handleStart();
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <div
-        className="text-center w-full max-w-3xl mx-auto px-10 py-14 rounded-[28px]"
-        style={{
-          backdropFilter: 'blur(18px)',
-          background:
-            'linear-gradient(135deg, rgba(80,90,255,0.22), rgba(120,80,255,0.14))',
-          boxShadow: '0 0 60px rgba(120,120,255,0.25)',
-        }}>
-        {/* Title */}
-        <h1
-          className="text-4xl sm:text-5xl font-black mb-3"
-          style={{ letterSpacing: '0.15em' }}>
-          THE DECISION LAB
-        </h1>
-        <p className="text-[#c9ccff] mb-10 tracking-wider opacity-90">
-          Where futures are shaped by choices.
-        </p>
-
-        {/* Intro text */}
-        <div className="space-y-3 max-w-xl mx-auto text-left mb-10">
-          {INTRO_LINES.map((line, i) => (
-            <p
-              key={i}
-              className="leading-relaxed text-[#e8ebff]/80 text-sm sm:text-base">
-              {line}
-            </p>
-          ))}
-          <p className="italic opacity-50 text-sm mt-4">
-            Every decision leaves a fingerprint on history.
+    <div className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-6 font-game">
+      <Card className="w-full max-w-2xl shadow-2xl border-border/50">
+        <CardContent className="px-8 py-12 sm:px-14 sm:py-16 text-center space-y-8">
+          {/* Eyebrow label */}
+          <p className="text-xs font-semibold tracking-[0.3em] uppercase text-muted-foreground">
+            Leadership Simulation
           </p>
-        </div>
 
-        {/* Input + Button */}
-        <div className="flex flex-col items-center gap-4">
-          <input
-            type="text"
-            placeholder="Enter your team name"
-            value={teamName}
-            onChange={(e) => setTeamName(e.target.value)}
-            onKeyDown={handleKeyDown}
-            maxLength={40}
-            className="w-full max-w-sm px-5 py-3 rounded-2xl text-white text-center placeholder-white/35 outline-none transition-all"
-            style={{
-              background: 'rgba(255,255,255,0.12)',
-              border: '1px solid rgba(255,255,255,0.18)',
-              boxShadow: 'inset 0 0 8px rgba(255,255,255,0.08)',
-            }}
-          />
-          <button
-            onClick={handleStart}
-            disabled={!teamName.trim()}
-            className="px-12 py-3 rounded-full font-semibold tracking-widest text-white transition-all duration-300 uppercase text-sm disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{
-              background: 'linear-gradient(135deg, #6f78ff, #c08bff)',
-              boxShadow: '0 0 14px rgba(160,160,255,0.35)',
-            }}
-            onMouseEnter={(e) => {
-              if (!teamName.trim()) return;
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow =
-                '0 0 22px rgba(190,190,255,0.55)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = '';
-              e.currentTarget.style.boxShadow =
-                '0 0 14px rgba(160,160,255,0.35)';
-            }}>
-            Begin
-          </button>
-        </div>
-      </div>
+          {/* Title block */}
+          <div className="space-y-3">
+            <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-foreground">
+              The Decision Lab
+            </h1>
+            <p className="text-muted-foreground text-sm sm:text-base tracking-wide">
+              Where futures are shaped by choices.
+            </p>
+          </div>
+
+          {/* Divider */}
+          <div className="h-px bg-border/50 max-w-xs mx-auto" />
+
+          {/* Intro lines */}
+          <div className="space-y-3 text-left max-w-lg mx-auto">
+            {INTRO_LINES.map((line, i) => (
+              <p key={i} className="text-sm leading-relaxed text-foreground/70">
+                {line}
+              </p>
+            ))}
+            <p className="italic text-muted-foreground/50 text-xs pt-2 text-center">
+              Every decision leaves a fingerprint on history.
+            </p>
+          </div>
+
+          {/* Input + CTA */}
+          <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto w-full pt-2">
+            <Input
+              type="text"
+              placeholder="Enter your team name"
+              value={teamName}
+              onChange={(e) => setTeamName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleStart()}
+              maxLength={40}
+              className="text-center font-game h-10"
+              autoFocus
+            />
+            <Button
+              onClick={handleStart}
+              disabled={!teamName.trim()}
+              className="gap-2 font-semibold tracking-widest uppercase text-xs font-game h-10 shrink-0 sm:px-6">
+              Begin
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
