@@ -48,6 +48,9 @@
   --color-game-accent: var(--game-accent);
   --color-game-accent-foreground: var(--game-accent-foreground);
   --color-game-danger: var(--game-danger);
+  /* Score-specific color tokens */
+  --color-score-perfect: var(--score-perfect);
+  --color-score-partial: var(--score-partial);
 }
 
 :root {
@@ -88,6 +91,9 @@
   --game-accent: oklch(0.7 0.16 60);
   --game-accent-foreground: oklch(0.15 0.05 60);
   --game-danger: oklch(0.55 0.22 25);
+  /* Score tokens — light mode */
+  --score-perfect: oklch(0.52 0.16 145);
+  --score-partial: oklch(0.62 0.16 48);
 }
 
 .dark {
@@ -126,6 +132,9 @@
   --game-accent: oklch(0.83 0.17 70);
   --game-accent-foreground: oklch(0.12 0.04 70);
   --game-danger: oklch(0.68 0.22 25);
+  /* Score tokens — dark mode */
+  --score-perfect: oklch(0.72 0.18 145);
+  --score-partial: oklch(0.78 0.16 52);
 }
 
 @layer base {
