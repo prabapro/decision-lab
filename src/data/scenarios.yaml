@@ -1,0 +1,283 @@
+# src/data/scenarios.yaml
+# Each scenario follows the same structure.
+# Multiline text uses the YAML literal block scalar (|) to preserve line breaks.
+# The leading/trailing blank lines within narrative blocks are intentional —
+# they match the original spacing used in Play.jsx.
+
+scenarios:
+  - month: 1
+    title: 'Month 1 — The Ethical Shortcut'
+    narrative: |
+
+      You are part of the executive leadership team of a fast-growing global software company.
+
+      Your flagship product handles sensitive personal data for millions of users.
+
+      Three weeks ago, a senior engineer escalated a critical vulnerability:
+
+      • Attackers could access user databases
+      • The exploit leaves almost no trace
+      • A full patch will take 8–12 weeks
+
+      Your legal counsel warns:
+      "If we disclose now, we invite lawsuits and regulatory scrutiny."
+
+      Your PR team argues:
+      "We should fix it quietly first, then disclose later."
+
+      Your security team counters:
+      "Attackers are actively scanning for this vulnerability."
+
+      A junior engineer hints that whistleblowers may go public.
+
+      Nothing has leaked yet.
+
+      What do you do?
+
+    intel:
+      - headline: 'Noise'
+        body: 'External actors are already probing your servers for this exact vulnerability pattern.'
+      - headline: 'Compliance'
+        body: 'Regulators in two countries are monitoring unusual network traffic from your platform.'
+      - headline: 'Emails'
+        body: 'Internal emails show leadership knew about this flaw three weeks ago.'
+      - headline: 'Markets'
+        body: 'Investors remain completely unaware of the issue.'
+      - headline: 'History'
+        body: 'A competitor collapsed after hiding a similar breach five years ago.'
+
+    options:
+      - text: 'Publicly disclose the vulnerability immediately and halt all new user sign-ups.'
+        meta:
+          points: 6
+          risk: 'cautious'
+          ethics: 'high'
+          time: 'early'
+          reality: 'pragmatic'
+      - text: 'Quietly fix the flaw while preparing a timed public disclosure.'
+        meta:
+          points: 10
+          risk: 'moderate'
+          ethics: 'high'
+          time: 'early'
+          reality: 'pragmatic'
+      - text: 'Delay disclosure and manage leaks internally.'
+        meta:
+          points: 3
+          risk: 'bold'
+          ethics: 'low'
+          time: 'delay'
+          reality: 'ideological'
+      - text: 'Ignore the flaw to avoid panic.'
+        meta:
+          points: 0
+          risk: 'bold'
+          ethics: 'low'
+          time: 'delay'
+          reality: 'ideological'
+
+    reveal:
+      outcome: |
+
+        You balanced transparency with operational realism.
+
+        You quietly contained the vulnerability while preparing regulators and customers for a controlled disclosure.
+
+        Short-term:
+        • No public panic
+        • No mass exploitation
+        • No uncontrolled leaks
+
+        Long-term:
+        • Legal exposure was minimized
+        • Trust erosion was limited
+        • The breach never became catastrophic
+
+        You avoided both denial and premature chaos.
+
+      realStory: |
+
+        This scenario was based on multiple delayed-disclosure breach cases, including Equifax (2017).
+
+        Equifax delayed patching and disclosure.
+
+        Attackers exfiltrated data of 147 million people.
+
+        Regulatory fines exceeded $700 million.
+
+        Leadership credibility collapsed.
+
+        The breach became a textbook example of governance failure.
+
+      comparison: |
+
+        You contained the vulnerability before disclosure.
+
+        Equifax delayed until after catastrophic damage.
+
+        Where you improved:
+        • Prevented mass exploitation
+        • Controlled regulatory timing
+
+        Where reality failed:
+        • Ignored technical warnings
+        • Delayed accountability
+
+      scoring: |
+
+        Timed containment scored highest because:
+
+        • It prevents uncontrolled harm
+        • Preserves legal positioning
+        • Avoids panic while not denying reality
+
+        Immediate disclosure without containment was ethically sound but operationally weak.
+
+      context: |
+
+        Delayed disclosure consistently worsens outcomes.
+
+        But reckless transparency also creates chaos.
+
+      lesson: |
+
+        Leadership lesson:
+        Ethics must be paired with execution.
+
+  - month: 2
+    title: 'Month 2 — The Invisible Shortage'
+    narrative: |
+
+      You are part of the national leadership team of a fuel-import-dependent country.
+
+      Foreign reserves are declining.
+      Tourism revenues have collapsed.
+      Global fuel prices are rising.
+
+      Your central bank quietly warns:
+
+      "At current burn rates, we won't be able to pay for fuel imports within 8–12 weeks."
+
+      So far:
+
+      • Fuel stations are operating
+      • Power plants are running
+      • No visible shortages
+      • The public is unaware
+
+      Your economic advisors warn:
+      "If we don't act now, suppliers will stop shipping fuel entirely."
+
+      Your political advisors warn:
+      "Emergency financing will trigger public panic."
+
+      Nothing looks broken yet.
+
+      But the math says collapse is coming.
+
+      What do you do?
+
+    intel:
+      - headline: 'Reserves'
+        body: 'Fuel reserves are down to less than two weeks of national consumption.'
+      - headline: 'Suppliers'
+        body: 'Fuel suppliers are refusing credit-based shipments.'
+      - headline: 'Credit'
+        body: 'Foreign lenders are freezing new lines of credit.'
+      - headline: 'Grid'
+        body: 'Power stations report dangerously low buffers.'
+      - headline: 'Inflows'
+        body: 'Tourism revenues are collapsing faster than projected.'
+
+    options:
+      - text: 'Secure emergency international financing immediately.'
+        meta:
+          points: 6
+          risk: 'bold'
+          ethics: 'high'
+          time: 'early'
+          reality: 'pragmatic'
+      - text: 'Announce fuel rationing to conserve reserves.'
+        meta:
+          points: 5
+          risk: 'moderate'
+          ethics: 'high'
+          time: 'early'
+          reality: 'pragmatic'
+      - text: 'Diversify suppliers and quietly open financing talks.'
+        meta:
+          points: 10
+          risk: 'cautious'
+          ethics: 'high'
+          time: 'early'
+          reality: 'pragmatic'
+      - text: 'Delay decisions to avoid political fallout.'
+        meta:
+          points: 0
+          risk: 'cautious'
+          ethics: 'low'
+          time: 'delay'
+          reality: 'ideological'
+
+    reveal:
+      outcome: |
+
+        You stabilized supply without triggering panic.
+
+        Suppliers resumed shipments.
+        Fuel continuity was preserved.
+        Public confidence remained intact.
+
+        You bought time before collapse became visible.
+
+      realStory: |
+
+        This scenario was based on Sri Lanka's 2022 fuel crisis.
+
+        Sri Lanka delayed IMF talks and supplier diversification.
+
+        Fuel ships stopped arriving.
+
+        Power stations shut down.
+
+        Long queues formed overnight.
+
+        Public protests exploded.
+
+        Emergency reforms came too late.
+
+      comparison: |
+
+        You acted before suppliers walked away.
+
+        Sri Lanka acted after ships stopped arriving.
+
+        Where you improved:
+        • Preserved supply continuity
+        • Prevented panic shortages
+
+        Where reality failed:
+        • Delayed reforms
+        • Prioritized political optics
+
+      scoring: |
+
+        Quiet diversification scored highest because:
+
+        • It stabilizes supply without panic
+        • Preserves negotiation leverage
+
+        Immediate financing alone was partial.
+
+        Delay mirrors real-world collapse logic.
+
+      context: |
+
+        Energy collapse does not announce itself.
+
+        Delay multiplies damage.
+
+      lesson: |
+
+        Leadership lesson:
+        Silent crises still kill systems.

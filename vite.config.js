@@ -7,6 +7,7 @@ import { readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import yaml from '@modyfi/vite-plugin-yaml';
 
 // Read package.json to get the version
 const packageJson = JSON.parse(
@@ -24,7 +25,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), ViteMinifyPlugin({})],
+  plugins: [react(), tailwindcss(), yaml(), ViteMinifyPlugin({})],
   define: {
     // Make the version available as an environment variable
     'import.meta.env.VITE_APP_VERSION': JSON.stringify(appVersion),
