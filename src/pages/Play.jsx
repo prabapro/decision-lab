@@ -242,11 +242,6 @@ function PlayContent() {
           )}
         </div>
       </div>
-
-      {/* Footer watermark */}
-      <p className="text-center text-xs tracking-widest text-muted-foreground/20 mt-10 font-game">
-        {teamName}
-      </p>
     </div>
   );
 }

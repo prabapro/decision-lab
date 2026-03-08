@@ -6,9 +6,8 @@
 
 scenarios:
   - month: 1
-    title: 'Month 1 — The Ethical Shortcut'
+    title: 'Month 1: The Ethical Shortcut'
     narrative: |
-
       You are part of the executive leadership team of a fast-growing global software company.
 
       Your flagship product handles sensitive personal data for millions of users.
@@ -142,9 +141,8 @@ scenarios:
       lesson: 'Ethics must be paired with execution.'
 
   - month: 2
-    title: 'Month 2 — The Invisible Shortage'
+    title: 'Month 2: The Invisible Shortage'
     narrative: |
-
       You are part of the national leadership team of a fuel-import-dependent country.
 
       Foreign reserves are declining.
@@ -277,9 +275,8 @@ scenarios:
       lesson: 'Silent crises still kill systems.'
 
   - month: 3
-    title: 'Month 3 — The Quiet Signal'
+    title: 'Month 3: The Quiet Signal'
     narrative: |
-
       You are part of the national leadership team of a major travel hub.
 
       A new respiratory illness has emerged overseas.
@@ -417,9 +414,8 @@ scenarios:
       lesson: 'Speed beats certainty.'
 
   - month: 4
-    title: 'Month 4 — The Clean Break'
+    title: 'Month 4: The Clean Break'
     narrative: |
-
       You are part of the national leadership team of an agrarian economy.
 
       Your country relies heavily on chemical fertilizers to sustain:
@@ -550,9 +546,8 @@ scenarios:
       lesson: 'Implementation beats ideology.'
 
   - month: 5
-    title: 'Month 5 — The Modernization Trap'
+    title: 'Month 5: The Modernization Trap'
     narrative: |
-
       You are part of the executive leadership team of a century-old consumer technology company.
 
       Your flagship physical product still generates:
@@ -695,9 +690,8 @@ scenarios:
       lesson: 'Disruption should be layered, not detonated.'
 
   - month: 6
-    title: 'Month 6 — The Moral Exit'
+    title: 'Month 6: The Moral Exit'
     narrative: |
-
       You are part of the global executive leadership team of a major consumer brand.
 
       Your company operates hundreds of outlets in a foreign country.
@@ -835,9 +829,8 @@ scenarios:
       lesson: 'Moral action still requires operational realism.'
 
   - month: 7
-    title: 'Month 7 — The Algorithmic Debt'
+    title: 'Month 7: The Algorithmic Debt'
     narrative: |
-
       You are part of the executive leadership team of a global social media platform.
 
       Your recommendation algorithm has driven explosive growth.
@@ -974,9 +967,8 @@ scenarios:
       lesson: 'Ethical debt matures with interest.'
 
   - month: 8
-    title: 'Month 8 — The Merger Delusion'
+    title: 'Month 8: The Merger Delusion'
     narrative: |
-
       You are part of the executive leadership team of a fast-growing technology firm.
 
       A massive legacy conglomerate offers a historic merger.
@@ -1109,9 +1101,8 @@ scenarios:
       lesson: 'Scale without integration is suicide.'
 
   - month: 9
-    title: 'Month 9 — The Unthinkable Offer'
+    title: 'Month 9: The Unthinkable Offer'
     narrative: |
-
       You are part of the executive leadership team of a dominant mobile hardware company.
 
       Your devices once defined the industry.
@@ -1245,9 +1236,8 @@ scenarios:
       lesson: 'Reality beats identity.'
 
   - month: 10
-    title: 'Month 10 — The Slow Burn'
+    title: 'Month 10: The Slow Burn'
     narrative: |
-
       You are part of the national leadership team of a heavily import-dependent country.
 
       Fuel shipments are becoming irregular.
@@ -1376,9 +1366,8 @@ scenarios:
       lesson: 'Silent crises are still crises.'
 
   - month: 11
-    title: 'Month 11 — The Run'
+    title: 'Month 11: The Run'
     narrative: |
-
       You are part of the central bank leadership of a major economy.
 
       A viral rumor spreads that a major domestic bank is insolvent.
@@ -1509,9 +1498,8 @@ scenarios:
       lesson: 'Speed beats purity.'
 
   - month: 12
-    title: 'Month 12 — The Convergence'
+    title: 'Month 12: The Convergence'
     narrative: |
-
       You are now leading a country facing cascading systemic collapse.
 
       Multiple crises converge simultaneously:

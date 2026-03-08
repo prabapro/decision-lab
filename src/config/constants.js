@@ -13,9 +13,9 @@ export const scenarios = data.scenarios;
 // ---------------------------------------------------------------------------
 
 export const PHASE_DURATIONS = {
-  1: 5, // Read Case - Default: 90 seconds
-  2: 5, // Gather Intel - Default: 30 seconds
-  3: 5, // Decide Now - Default: 25 seconds
+  1: 90, // Read Case - Default: 90 seconds
+  2: 30, // Gather Intel - Default: 30 seconds
+  3: 25, // Decide Now - Default: 25 seconds
 };
 
 export const PHASE_META = {

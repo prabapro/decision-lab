@@ -80,15 +80,15 @@ export default function GameHeader() {
             {gameStatus === 'playing' && (
               <Badge
                 variant="outline"
-                className="game-badge-text border-primary/30 text-primary font-game hidden sm:inline-flex">
-                Live
+                className="game-badge-text border-score-perfect text-score-perfect font-game hidden sm:inline-flex">
+                In progress
               </Badge>
             )}
             {gameStatus === 'ended' && (
               <Badge
                 variant="outline"
-                className="game-badge-text border-game-accent/40 text-game-accent font-game hidden sm:inline-flex">
-                Complete
+                className="game-badge-text border-game-accent text-game-accent font-game hidden sm:inline-flex">
+                Completed
               </Badge>
             )}
             <ThemeToggle />
