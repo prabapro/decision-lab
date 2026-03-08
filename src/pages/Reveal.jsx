@@ -2,7 +2,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@stores/useGameStore';
-import { scenarios } from '@data/scenarios';
+import { scenarios } from '@config/constants';
 import GameGuard from '@components/common/GameGuard';
 
 // ---------------------------------------------------------------------------
