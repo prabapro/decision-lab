@@ -18,7 +18,7 @@ export default function GameLayout() {
   return (
     <div className="min-h-screen game-bg font-game flex flex-col">
       <GameHeader />
-      <main className="flex-1">
+      <main className="flex-1 flex flex-col">
         <Outlet />
       </main>
     </div>

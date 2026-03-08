@@ -41,7 +41,7 @@ function HomeContent() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-6 font-game">
+    <div className="flex-1 flex items-center justify-center p-6 font-game">
       <Card className="w-full max-w-2xl shadow-2xl border-border/50">
         <CardContent className="px-8 py-12 sm:px-14 sm:py-16 text-center space-y-8">
           {/* Eyebrow label */}
