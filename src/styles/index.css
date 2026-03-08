@@ -1,5 +1,6 @@
 /* src/styles/index.css */
 @import 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap';
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -7,6 +8,7 @@
 
 @theme inline {
   --font-sans: 'Inter', sans-serif;
+  --font-game: var(--game-font);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -42,6 +44,10 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  /* Game-specific color tokens */
+  --color-game-accent: var(--game-accent);
+  --color-game-accent-foreground: var(--game-accent-foreground);
+  --color-game-danger: var(--game-danger);
 }
 
 :root {
@@ -77,6 +83,11 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+  /* Game tokens — light mode */
+  --game-font: 'Poppins', system-ui, sans-serif;
+  --game-accent: oklch(0.7 0.16 60);
+  --game-accent-foreground: oklch(0.15 0.05 60);
+  --game-danger: oklch(0.55 0.22 25);
 }
 
 .dark {
@@ -111,6 +122,10 @@
   --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
+  /* Game tokens — dark mode */
+  --game-accent: oklch(0.83 0.17 70);
+  --game-accent-foreground: oklch(0.12 0.04 70);
+  --game-danger: oklch(0.68 0.22 25);
 }
 
 @layer base {
@@ -121,11 +136,24 @@
     @apply bg-background text-foreground;
   }
   /*
-    * Fixes the issue of buttons losing the pointer cursor in shadcn and tailwind.
-    * See https://dev.to/mmvergara/why-are-buttons-losing-the-pointer-cursor-the-shadcn-and-tailwind-debate-2j93
-  */
+   * Fixes the issue of buttons losing the pointer cursor in shadcn and tailwind.
+   * See https://dev.to/mmvergara/why-are-buttons-losing-the-pointer-cursor-the-shadcn-and-tailwind-debate-2j93
+   */
   button:not([disabled]),
   [role='button']:not([disabled]) {
     cursor: pointer;
+  }
+}
+
+@layer utilities {
+  /* Atmospheric background for game screens — subtle primary tint that adapts to theme */
+  .game-bg {
+    background:
+      radial-gradient(
+        ellipse 100% 45% at 50% 0%,
+        color-mix(in oklch, var(--primary) 12%, transparent),
+        transparent
+      ),
+      var(--background);
   }
 }

@@ -13,6 +13,13 @@
 │   │   │   ├── LoadingSpinner.jsx
 │   │   │   ├── MarkdownRenderer.jsx
 │   │   │   └── ScrollToTop.jsx
+│   │   ├── game
+│   │   │   ├── GameHeader.jsx
+│   │   │   ├── IntelSection.jsx
+│   │   │   ├── OptionsSection.jsx
+│   │   │   ├── PhaseTimerBar.jsx
+│   │   │   ├── ResumeDialog.jsx
+│   │   │   └── ScoreHeader.jsx
 │   │   ├── layout
 │   │   │   ├── Footer.jsx
 │   │   │   ├── GameLayout.jsx
@@ -25,6 +32,7 @@
 │   │       ├── badge.jsx
 │   │       ├── button.jsx
 │   │       ├── card.jsx
+│   │       ├── input.jsx
 │   │       ├── navigation-menu.jsx
 │   │       ├── theme-toggle.jsx
 │   │       └── tooltip.jsx
@@ -50,6 +58,7 @@
 │   │   └── AppRouter.jsx
 │   ├── stores
 │   │   ├── useGameStore.js
+│   │   ├── useGameUIStore.js
 │   │   └── useSettingsStore.js
 │   ├── styles
 │   │   └── index.css

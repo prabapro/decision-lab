@@ -5,9 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@stores/useGameStore';
 import { AURA_TIERS, scenarios } from '@config/constants';
 import GameGuard from '@components/common/GameGuard';
+import { Button } from '@components/ui/button';
+import { Card, CardContent } from '@components/ui/card';
+import { Badge } from '@components/ui/badge';
+import { RotateCcw, Trophy } from 'lucide-react';
 
 // ---------------------------------------------------------------------------
-// Helpers (ported from original script.js)
+// Helpers (ported from original script.js, logic unchanged)
 // ---------------------------------------------------------------------------
 
 function generateLeadershipProfile(decisionLog, totalScore, systemStress) {
@@ -64,11 +68,9 @@ function buildNarrative({
 
 function StatPill({ label, value }) {
   return (
-    <div
-      className="flex flex-col items-center px-6 py-3 rounded-2xl"
-      style={{ background: 'rgba(255,255,255,0.06)' }}>
-      <span className="text-xl font-bold">{value}</span>
-      <span className="text-xs tracking-widest uppercase opacity-50 mt-1">
+    <div className="flex flex-col items-center px-5 py-3 rounded-xl bg-muted/40 border border-border/40 font-game min-w-18">
+      <span className="text-xl font-bold text-foreground">{value}</span>
+      <span className="text-[10px] tracking-widest uppercase text-muted-foreground mt-0.5">
         {label}
       </span>
     </div>
@@ -77,23 +79,26 @@ function StatPill({ label, value }) {
 
 function ResetConfirm({ onConfirm, onCancel }) {
   return (
-    <div className="space-y-3">
-      <p className="text-sm opacity-60">
+    <div className="space-y-4 font-game">
+      <p className="text-sm text-muted-foreground text-center">
         This will erase all progress. Are you sure?
       </p>
       <div className="flex gap-3 justify-center">
-        <button
+        <Button
+          variant="destructive"
+          size="sm"
           onClick={onConfirm}
-          className="px-6 py-2 rounded-full text-sm font-medium text-white transition-all"
-          style={{ background: '#dc2626' }}>
+          className="gap-1.5 font-game">
+          <RotateCcw className="w-3.5 h-3.5" />
           Yes, Reset
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
           onClick={onCancel}
-          className="px-6 py-2 rounded-full text-sm font-medium transition-all"
-          style={{ background: 'rgba(255,255,255,0.1)', color: '#e8ebff' }}>
+          className="font-game">
           Cancel
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -149,87 +154,79 @@ function ResultsContent() {
   };
 
   return (
-    <div className="min-h-screen py-10 px-4">
-      <div
-        className="max-w-2xl mx-auto text-center rounded-[42px] px-10 py-14"
-        style={{
-          backdropFilter: 'blur(24px)',
-          background:
-            'linear-gradient(135deg, rgba(120,100,255,0.28), rgba(255,200,120,0.18))',
-          boxShadow: '0 0 70px rgba(255,200,120,0.30)',
-        }}>
-        {/* Aura title */}
-        <p className="text-xs tracking-widest uppercase opacity-50 mb-4">
-          Your Leadership Aura
-        </p>
-        <h2
-          className="text-3xl sm:text-4xl font-black tracking-widest mb-3"
-          style={{
-            color: '#ffd36b',
-            textShadow: '0 0 28px rgba(255,200,100,0.65)',
-            letterSpacing: '0.12em',
-          }}>
-          {aura.name}
-        </h2>
+    <div className="container mx-auto px-4 py-10 max-w-2xl font-game">
+      {/* ── Aura / Identity card ─────────────────────────────────────────── */}
+      <Card className="mb-6 shadow-lg border-game-accent/20 bg-game-accent/5">
+        <CardContent className="p-8 sm:p-10 text-center space-y-4">
+          {/* Eyebrow */}
+          <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground font-semibold">
+            Your Leadership Aura
+          </p>
 
-        {/* Identity */}
-        <p className="text-xl font-semibold tracking-widest mb-8 opacity-90">
-          {identity}
-        </p>
+          {/* Aura name */}
+          <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-game-accent">
+            {aura.name}
+          </h2>
 
-        {/* Narrative */}
-        <p className="text-sm leading-[1.85] whitespace-pre-line text-[#e8ebff]/75 mb-8 text-left">
-          {narrative}
-        </p>
+          {/* Identity badge */}
+          <div className="flex justify-center">
+            <Badge
+              variant="outline"
+              className="border-game-accent/30 text-game-accent bg-game-accent/10 text-xs tracking-widest uppercase font-semibold font-game px-4 py-1">
+              <Trophy className="w-3 h-3 mr-1.5" />
+              {identity}
+            </Badge>
+          </div>
 
-        {/* Stats row */}
-        <div className="flex justify-center gap-4 mb-8">
-          <StatPill label="Score" value={totalScore} />
-          <StatPill label="Stress" value={systemStress} />
-          <StatPill label="Months" value={decisionLog.length} />
-        </div>
+          {/* Divider */}
+          <div className="h-px bg-border/40 my-2" />
 
-        {/* Scoreboard */}
-        <div
-          className="rounded-2xl px-6 py-5 mb-8 text-left"
-          style={{ background: 'rgba(255,255,255,0.05)' }}>
-          <p className="text-xs tracking-widest uppercase opacity-40 mb-3">
+          {/* Narrative */}
+          <p className="text-sm leading-[1.9] whitespace-pre-line text-foreground/70 text-left">
+            {narrative}
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* ── Stats row ───────────────────────────────────────────────────── */}
+      <div className="flex justify-center gap-3 mb-6">
+        <StatPill label="Score" value={totalScore} />
+        <StatPill label="Stress" value={systemStress} />
+        <StatPill label="Months" value={decisionLog.length} />
+      </div>
+
+      {/* ── Scoreboard card ──────────────────────────────────────────────── */}
+      <Card className="mb-6 border-border/40 shadow-sm">
+        <CardContent className="p-5 sm:p-6">
+          <p className="text-xs tracking-widest uppercase text-muted-foreground/60 mb-3 font-semibold font-game">
             Final Scoreboard
           </p>
-          <p className="text-lg font-bold">
-            {teamName}
-            <span className="opacity-60 font-normal ml-2">
+          <div className="flex items-baseline gap-2">
+            <span className="text-lg font-bold text-foreground">
+              {teamName}
+            </span>
+            <span className="text-muted-foreground text-sm">
               — {totalScore} pts
             </span>
-          </p>
-        </div>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Play again / reset */}
+      {/* ── Play again / Reset ───────────────────────────────────────────── */}
+      <div className="flex justify-center">
         {confirmReset ? (
           <ResetConfirm
             onConfirm={handleReset}
             onCancel={() => setConfirmReset(false)}
           />
         ) : (
-          <button
+          <Button
+            size="lg"
             onClick={() => setConfirmReset(true)}
-            className="px-10 py-3 rounded-full font-semibold tracking-wide text-white transition-all duration-300"
-            style={{
-              background: 'linear-gradient(135deg, #6f78ff, #c08bff)',
-              boxShadow: '0 0 14px rgba(160,160,255,0.35)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow =
-                '0 0 22px rgba(190,190,255,0.55)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = '';
-              e.currentTarget.style.boxShadow =
-                '0 0 14px rgba(160,160,255,0.35)';
-            }}>
+            className="gap-2 font-semibold tracking-widest uppercase text-sm font-game px-10">
+            <RotateCcw className="w-4 h-4" />
             Play Again
-          </button>
+          </Button>
         )}
       </div>
     </div>

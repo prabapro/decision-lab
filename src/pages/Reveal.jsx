@@ -4,9 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@stores/useGameStore';
 import { scenarios } from '@config/constants';
 import GameGuard from '@components/common/GameGuard';
+import { Button } from '@components/ui/button';
+import { Card, CardContent } from '@components/ui/card';
+import ScoreHeader from '@components/game/ScoreHeader';
+import { ArrowRight, Flag } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 // ---------------------------------------------------------------------------
-// Config — maps reveal keys to display titles and animation timing
+// Reveal section config — order and display metadata for each reveal block
 // ---------------------------------------------------------------------------
 
 const REVEAL_SECTIONS = [
@@ -22,64 +27,6 @@ const REVEAL_SECTIONS = [
   { key: 'context', title: 'Historical Context', delay: '1.5s' },
   { key: 'lesson', title: 'Leadership Lesson', delay: '1.8s' },
 ];
-
-// ---------------------------------------------------------------------------
-// Sub-components
-// ---------------------------------------------------------------------------
-
-function ScoreHeader({ points }) {
-  const isBrilliant = points === 10;
-  const isBad = points === 0;
-  const color = isBrilliant ? '#ffd36b' : isBad ? '#ef4444' : '#818cf8';
-  const feedback = isBrilliant
-    ? 'Strategically brilliant.'
-    : points > 0
-      ? 'You improved, but there was a better path.'
-      : 'Warning: this decision is alarming.';
-
-  return (
-    <div className="text-center mb-8">
-      <div
-        className="text-5xl font-black tracking-widest mb-3"
-        style={{ color, textShadow: `0 0 30px ${color}60` }}>
-        +{points}
-      </div>
-      <p className="text-xs tracking-widest uppercase opacity-70">{feedback}</p>
-    </div>
-  );
-}
-
-function RevealSection({ title, content, highlight, animationDelay }) {
-  return (
-    <div
-      className="rounded-2xl px-6 py-5 mb-4"
-      style={{
-        background: 'rgba(255,255,255,0.05)',
-        boxShadow: 'inset 0 0 14px rgba(255,255,255,0.04)',
-        animation: 'revealSection 0.7s ease both',
-        animationDelay,
-      }}>
-      <h3
-        className="text-xs font-semibold tracking-widest uppercase mb-3"
-        style={{ color: '#ffd36b' }}>
-        {title}
-      </h3>
-      <p
-        className="text-sm leading-[1.75] whitespace-pre-line"
-        style={
-          highlight
-            ? {
-                color: '#ffd166',
-                fontWeight: 600,
-                textShadow: '0 0 12px rgba(255,209,102,0.35)',
-              }
-            : { color: '#d6daff' }
-        }>
-        {content}
-      </p>
-    </div>
-  );
-}
 
 // ---------------------------------------------------------------------------
 // Main page (wrapped in GameGuard)
@@ -114,60 +61,73 @@ function RevealContent() {
   return (
     <>
       <style>{`
-        @keyframes revealSection {
-          from { opacity: 0; transform: translateY(14px); }
+        @keyframes revealIn {
+          from { opacity: 0; transform: translateY(10px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+        .reveal-card { animation: revealIn 0.6s ease both; }
       `}</style>
 
-      <div className="min-h-screen py-10 px-4">
-        <div
-          className="max-w-3xl mx-auto rounded-[38px] px-8 py-10"
-          style={{
-            backdropFilter: 'blur(22px)',
-            background:
-              'linear-gradient(135deg, rgba(90,100,255,0.22), rgba(150,90,255,0.16))',
-            boxShadow: '0 0 50px rgba(160,120,255,0.25)',
-          }}>
-          <ScoreHeader points={points} />
+      <div className="container mx-auto px-4 py-8 max-w-3xl font-game">
+        {/* Score header card */}
+        <Card
+          className="mb-6 shadow-md border-border/50 reveal-card"
+          style={{ animationDelay: '0.1s' }}>
+          <CardContent className="p-6 sm:p-8">
+            <ScoreHeader points={points} />
+          </CardContent>
+        </Card>
 
+        {/* Reveal section cards */}
+        <div className="space-y-3 mb-8">
           {REVEAL_SECTIONS.map(({ key, title, delay, highlight }) => (
-            <RevealSection
+            <Card
               key={key}
-              title={title}
-              content={scenario.reveal[key]}
-              highlight={highlight}
-              animationDelay={delay}
-            />
+              className={cn(
+                'reveal-card border-border/40 shadow-sm',
+                highlight && 'border-game-accent/25 bg-game-accent/5',
+              )}
+              style={{ animationDelay: delay }}>
+              <CardContent className="p-5">
+                {/* Section label */}
+                <p className="text-xs font-semibold tracking-widest uppercase text-game-accent mb-3">
+                  {title}
+                </p>
+                {/* Section body */}
+                <p
+                  className={cn(
+                    'text-sm leading-[1.85] whitespace-pre-line',
+                    highlight
+                      ? 'text-game-accent font-semibold'
+                      : 'text-foreground/80',
+                  )}>
+                  {scenario.reveal[key]}
+                </p>
+              </CardContent>
+            </Card>
           ))}
+        </div>
 
-          {/* Next button */}
-          <div
-            className="text-center mt-8"
-            style={{
-              animation: 'revealSection 0.7s ease both',
-              animationDelay: '2.1s',
-            }}>
-            <button
-              onClick={handleNext}
-              className="px-10 py-3 rounded-full font-semibold tracking-wide text-white transition-all duration-300"
-              style={{
-                background: 'linear-gradient(135deg, #6f78ff, #c08bff)',
-                boxShadow: '0 0 14px rgba(160,160,255,0.35)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow =
-                  '0 0 22px rgba(190,190,255,0.55)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = '';
-                e.currentTarget.style.boxShadow =
-                  '0 0 14px rgba(160,160,255,0.35)';
-              }}>
-              {isLastMonth ? 'See Final Results' : 'Proceed to Next Scenario'}
-            </button>
-          </div>
+        {/* Next button */}
+        <div
+          className="flex justify-center reveal-card"
+          style={{ animationDelay: '2.1s' }}>
+          <Button
+            size="lg"
+            onClick={handleNext}
+            className="gap-2 font-semibold tracking-widest uppercase text-sm font-game px-8">
+            {isLastMonth ? (
+              <>
+                <Flag className="w-4 h-4" />
+                See Final Results
+              </>
+            ) : (
+              <>
+                Next Scenario
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </Button>
         </div>
       </div>
     </>

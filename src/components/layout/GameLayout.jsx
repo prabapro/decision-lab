@@ -1,28 +1,26 @@
 // src/components/layout/GameLayout.jsx
 
 import { Outlet } from 'react-router-dom';
+import GameHeader from '@components/game/GameHeader';
 
 /**
- * Full-screen immersive dark layout for all game screens.
+ * Full-screen immersive layout for all game screens.
  * Applied to /, /play, /reveal, /results routes via nested routing.
- * Intentionally has no header or footer.
  *
- * Uses <Outlet /> so it works as a React Router layout route:
- *   <Route element={<GameLayout />}>
- *     <Route index element={<Home />} />
- *     <Route path="play" element={<Play />} />
- *     ...
- *   </Route>
+ * Changes from original:
+ * — Removed hardcoded dark radial-gradient background and font-family inline styles.
+ * — Background now uses the `game-bg` utility (defined in index.css) which adapts
+ *   to both light and dark themes using CSS color-mix with the active --primary token.
+ * — Added sticky <GameHeader> above the <Outlet> so all game pages share it.
+ * — Renders <Outlet /> so it works as a React Router layout route.
  */
 export default function GameLayout() {
   return (
-    <div
-      className="min-h-screen text-[#e8ebff] overflow-x-hidden"
-      style={{
-        background: 'radial-gradient(circle at top, #1a1f4a, #050713)',
-        fontFamily: "'Product Sans', system-ui, sans-serif",
-      }}>
-      <Outlet />
+    <div className="min-h-screen game-bg font-game flex flex-col">
+      <GameHeader />
+      <main className="flex-1 flex flex-col">
+        <Outlet />
+      </main>
     </div>
   );
 }

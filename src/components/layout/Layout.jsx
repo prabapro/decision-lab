@@ -8,20 +8,10 @@ import MobileMenu from './MobileMenu';
 export default function Layout({ children }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    closeMobileMenu();
-  }, []);
-
-  // Close mobile menu on window resize to desktop
+  // Close mobile menu when the viewport grows past the mobile breakpoint
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {

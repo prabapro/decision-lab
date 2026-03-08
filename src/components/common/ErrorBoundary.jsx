@@ -63,7 +63,7 @@ class ErrorBoundary extends React.Component {
 
       // Default error UI
       return (
-        <div className="min-h-[400px] flex items-center justify-center p-6">
+        <div className="min-h-100 flex items-center justify-center p-6">
           <div className="max-w-md w-full text-center space-y-6">
             {/* Error Icon */}
             <div className="w-16 h-16 mx-auto bg-destructive/10 rounded-full flex items-center justify-center">
