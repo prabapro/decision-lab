@@ -63,19 +63,19 @@ export default function Play() {
 
 function PlayContent() {
   const navigate = useNavigate();
-  const { currentMonth, teamName, recordDecision, pendingReveal, decisionLog } =
+  const { currentMonth, teamName, recordDecision, pendingReveal } =
     useGameStore();
   const { setActiveTimer, clearActiveTimer } = useGameUIStore();
   const scenario = scenarios[currentMonth - 1];
 
   // ── Resume state detection ───────────────────────────────────────────────
-  // Three cases resolved once on mount:
-  //   'none'     → fresh game month 1, no decisions yet → skip dialog, start immediately
-  //   'ready'    → natural scenario-to-scenario navigation (sessionStorage key present)
+  // Two cases resolved once on mount:
+  //   'ready'    → fresh start OR natural scenario-to-scenario navigation
   //   'resuming' → browser was closed and reopened mid-game (no sessionStorage key)
+  //
+  // The dialog always shows so the user explicitly confirms before the timer
+  // starts — even on the very first scenario.
   const dialogMode = (() => {
-    const isFreshStart = currentMonth === 1 && decisionLog.length === 0;
-    if (isFreshStart) return 'none';
     try {
       return sessionStorage.getItem('decision-lab-session')
         ? 'ready'
@@ -85,8 +85,8 @@ function PlayContent() {
     }
   })();
 
-  // timerEnabled starts true only for fresh first-scenario games; blocked until dialog dismissed
-  const [timerEnabled, setTimerEnabled] = useState(dialogMode === 'none');
+  // Timer is always blocked until the user dismisses the dialog
+  const [timerEnabled, setTimerEnabled] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [intelRevealed, setIntelRevealed] = useState([]);
 
@@ -180,7 +180,7 @@ function PlayContent() {
   return (
     <div className="container mx-auto px-4 py-6 font-game">
       {/* ── Resume / ready dialog ────────────────────────────────────────── */}
-      {!timerEnabled && dialogMode !== 'none' && (
+      {!timerEnabled && (
         <ResumeDialog
           month={currentMonth}
           total={scenarios.length}
