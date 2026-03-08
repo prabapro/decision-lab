@@ -165,4 +165,32 @@
       ),
       var(--background);
   }
+
+  /* Traveling border animation — consumed by AnimatedBorderCard */
+  .animate-border-spin {
+    animation: border-spin 6s linear infinite;
+  }
+
+  /* Slow logo rotation — consumed by Home.jsx */
+  .animate-logo-spin-slow {
+    animation: logo-spin-slow 24s linear infinite;
+  }
+}
+
+@keyframes border-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes logo-spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

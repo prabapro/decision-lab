@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@stores/useGameStore';
 import { INTRO_LINES } from '@config/constants';
 import GameGuard from '@components/common/GameGuard';
+import AnimatedBorderCard from '@components/common/AnimatedBorderCard';
 import { Button } from '@components/ui/button';
-import { Card, CardContent } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { ArrowRight } from 'lucide-react';
 
@@ -42,60 +42,75 @@ function HomeContent() {
 
   return (
     <div className="flex-1 flex items-center justify-center p-6 font-game">
-      <Card className="w-full max-w-2xl shadow-2xl border-border/50">
-        <CardContent className="px-8 py-12 sm:px-14 sm:py-16 text-center space-y-8">
-          {/* Eyebrow label */}
-          <p className="text-xs font-semibold tracking-[0.3em] uppercase text-muted-foreground">
-            Leadership Simulation
+      <AnimatedBorderCard
+        className="w-full max-w-2xl shadow-2xl"
+        innerClassName="px-8 py-12 sm:px-14 sm:py-16">
+        {/* ── Spinning logo mark ──────────────────────────────────────── */}
+        <div className="flex justify-center mb-8">
+          <img
+            src="/images/decision-lab.svg"
+            alt="The Decision Lab"
+            className="h-16 w-16 animate-logo-spin-slow opacity-90"
+          />
+        </div>
+
+        {/* ── Eyebrow label ───────────────────────────────────────────── */}
+        <p className="text-center text-xs font-semibold tracking-[0.3em] uppercase text-accent-foreground mb-6">
+          Leadership Simulation
+        </p>
+
+        {/* ── Title block ─────────────────────────────────────────────── */}
+        <div className="text-center space-y-3 mb-6">
+          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-foreground">
+            The Decision Lab
+          </h1>
+          <p className="text-muted-foreground text-sm sm:text-base tracking-wide">
+            Where futures are shaped by choices.
           </p>
+        </div>
 
-          {/* Title block */}
-          <div className="space-y-3">
-            <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-foreground">
-              The Decision Lab
-            </h1>
-            <p className="text-muted-foreground text-sm sm:text-base tracking-wide">
-              Where futures are shaped by choices.
+        {/* ── Divider ─────────────────────────────────────────────────── */}
+        <div className="h-px bg-border/50 max-w-xs mx-auto mb-6" />
+
+        {/* ── Intro lines ─────────────────────────────────────────────── */}
+        <div className="space-y-3 text-left max-w-lg mx-auto mb-8">
+          {INTRO_LINES.map((line, i) => (
+            <p
+              key={i}
+              className="text-sm leading-relaxed text-foreground/70 flex gap-2.5">
+              {/* Accent bullet */}
+              <span className="text-accent-foreground mt-0.5 shrink-0 font-bold select-none">
+                ·
+              </span>
+              {line}
             </p>
-          </div>
+          ))}
+          <p className="italic text-muted-foreground/50 text-xs pt-2 text-center">
+            Every decision leaves a fingerprint on history.
+          </p>
+        </div>
 
-          {/* Divider */}
-          <div className="h-px bg-border/50 max-w-xs mx-auto" />
-
-          {/* Intro lines */}
-          <div className="space-y-3 text-left max-w-lg mx-auto">
-            {INTRO_LINES.map((line, i) => (
-              <p key={i} className="text-sm leading-relaxed text-foreground/70">
-                {line}
-              </p>
-            ))}
-            <p className="italic text-muted-foreground/50 text-xs pt-2 text-center">
-              Every decision leaves a fingerprint on history.
-            </p>
-          </div>
-
-          {/* Input + CTA */}
-          <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto w-full pt-2">
-            <Input
-              type="text"
-              placeholder="Enter your team name"
-              value={teamName}
-              onChange={(e) => setTeamName(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleStart()}
-              maxLength={40}
-              className="text-center font-game h-10"
-              autoFocus
-            />
-            <Button
-              onClick={handleStart}
-              disabled={!teamName.trim()}
-              className="gap-2 font-semibold tracking-widest uppercase text-xs font-game h-10 shrink-0 sm:px-6">
-              Begin
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+        {/* ── Input + CTA ─────────────────────────────────────────────── */}
+        <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto w-full">
+          <Input
+            type="text"
+            placeholder="Enter your team name"
+            value={teamName}
+            onChange={(e) => setTeamName(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleStart()}
+            maxLength={40}
+            className="text-center font-game h-10"
+            autoFocus
+          />
+          <Button
+            onClick={handleStart}
+            disabled={!teamName.trim()}
+            className="gap-2 font-semibold tracking-widest uppercase text-xs font-game h-10 shrink-0 sm:px-6">
+            Begin
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Button>
+        </div>
+      </AnimatedBorderCard>
     </div>
   );
 }
