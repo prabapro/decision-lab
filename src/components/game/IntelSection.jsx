@@ -18,19 +18,18 @@ export default function IntelSection({ intel, intelRevealed, onReveal }) {
 
   return (
     <div className="space-y-4 font-game">
-      {/* Header row */}
+      {/* Header row — game-label token */}
       <div className="flex items-center justify-between">
-        <p className="text-xs font-semibold tracking-widest uppercase text-game-accent">
-          Intelligence Briefing
-        </p>
+        <p className="game-label text-game-accent">Intelligence Briefing</p>
+        {/* game-badge-text token */}
         <Badge
           variant="outline"
-          className="text-[10px] font-game border-game-accent/30 text-game-accent font-semibold tracking-wide">
+          className="game-badge-text font-game border-game-accent/30 text-game-accent">
           {3 - usedCount} of 3 remaining
         </Badge>
       </div>
 
-      {/* Intel toggle buttons */}
+      {/* Intel toggle buttons — bumped from text-xs to text-sm */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
         {intel.map((item, i) => {
           const isRevealed = intelRevealed.some(
@@ -44,7 +43,7 @@ export default function IntelSection({ intel, intelRevealed, onReveal }) {
               disabled={!canClick}
               onClick={() => canClick && onReveal(item)}
               className={cn(
-                'px-3 py-2 rounded-lg text-xs font-medium text-left transition-all duration-200 border font-game',
+                'px-3 py-2.5 rounded-lg text-sm font-medium text-left transition-all duration-200 border font-game',
                 isRevealed
                   ? 'bg-game-accent/10 border-game-accent/30 text-game-accent cursor-default'
                   : canClick
@@ -57,13 +56,11 @@ export default function IntelSection({ intel, intelRevealed, onReveal }) {
         })}
       </div>
 
-      {/* Revealed intel content */}
+      {/* Revealed intel content — game-body token (text-base leading-relaxed) */}
       {intelRevealed.length > 0 && (
-        <div className="space-y-2 pt-1 border-t border-border/30">
+        <div className="space-y-2.5 pt-1 border-t border-border/30">
           {intelRevealed.map((item, i) => (
-            <div
-              key={i}
-              className="flex gap-2.5 text-sm leading-relaxed text-foreground/80">
+            <div key={i} className="flex gap-2.5 game-body text-foreground/80">
               <span className="text-game-accent mt-0.5 shrink-0 font-bold">
                 •
               </span>

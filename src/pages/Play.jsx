@@ -25,10 +25,11 @@ function Phase1Placeholder() {
         <Clock className="w-5 h-5 text-muted-foreground/40" />
       </div>
       <div className="space-y-1">
-        <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground/40">
+        {/* game-label token */}
+        <p className="game-label text-muted-foreground/40">
           Intel &amp; Decisions
         </p>
-        <p className="text-xs text-muted-foreground/30">Unlocks in Phase 2</p>
+        <p className="text-sm text-muted-foreground/30">Unlocks in Phase 2</p>
       </div>
       {/* Skeleton preview rows */}
       <div className="w-full max-w-50 space-y-2 opacity-20 pt-2">
@@ -69,12 +70,6 @@ function PlayContent() {
   const scenario = scenarios[currentMonth - 1];
 
   // ── Resume state detection ───────────────────────────────────────────────
-  // Two cases resolved once on mount:
-  //   'ready'    → fresh start OR natural scenario-to-scenario navigation
-  //   'resuming' → browser was closed and reopened mid-game (no sessionStorage key)
-  //
-  // The dialog always shows so the user explicitly confirms before the timer
-  // starts — even on the very first scenario.
   const dialogMode = (() => {
     try {
       return sessionStorage.getItem('decision-lab-session')
@@ -85,21 +80,17 @@ function PlayContent() {
     }
   })();
 
-  // Timer is always blocked until the user dismisses the dialog
   const [timerEnabled, setTimerEnabled] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [intelRevealed, setIntelRevealed] = useState([]);
 
-  // Guard: if pendingReveal is already true when Play mounts, send straight to reveal
   useEffect(() => {
     if (pendingReveal) {
       navigate('/reveal', { replace: true });
     }
   }, [pendingReveal, navigate]);
 
-  // Guard: prevent recordDecision from firing more than once per scenario
   const hasDecided = useRef(false);
-  // Ref to avoid stale closure inside the timer callback
   const selectedOptionRef = useRef(null);
 
   const handleSelectOption = (index) => {
@@ -137,7 +128,6 @@ function PlayContent() {
       enabled: timerEnabled,
     });
 
-  // ── Sync timer state to GameHeader via useGameUIStore ───────────────────
   useEffect(() => {
     if (timerEnabled && !pendingReveal) {
       setActiveTimer({ phase, timeLeft, progress });
@@ -154,7 +144,6 @@ function PlayContent() {
     clearActiveTimer,
   ]);
 
-  // Clear timer from header when this page unmounts (navigating away)
   useEffect(() => {
     return () => clearActiveTimer();
   }, [clearActiveTimer]);
@@ -170,6 +159,7 @@ function PlayContent() {
 
   if (!scenario || pendingReveal) return null;
 
+  // Phase label text
   const phaseLabel =
     phase === 1
       ? `Phase 1 of 3 — Read the case (${PHASE_DURATIONS[1]}s)`
@@ -190,18 +180,16 @@ function PlayContent() {
         />
       )}
 
-      {/* ── Phase label row ──────────────────────────────────────────────── */}
+      {/* ── Phase label row — game-label token ──────────────────────────── */}
       <div className="flex items-center gap-3 mb-5">
-        <p className="text-xs tracking-widest uppercase text-muted-foreground/60 font-medium">
-          {phaseLabel}
-        </p>
+        <p className="game-label text-muted-foreground/60">{phaseLabel}</p>
         {(isPhase2 || isPhase3) && (
           <Badge
             variant="outline"
             className={
               isPhase3
-                ? 'border-game-accent/40 text-game-accent text-[10px] tracking-widest uppercase font-semibold font-game'
-                : 'border-primary/30 text-primary text-[10px] tracking-widest uppercase font-semibold font-game'
+                ? 'game-badge-text border-game-accent/40 text-game-accent font-game'
+                : 'game-badge-text border-primary/30 text-primary font-game'
             }>
             {isPhase3 ? '⚡ Decide Now' : '🧠 Gather Intel'}
           </Badge>
@@ -218,7 +206,8 @@ function PlayContent() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-sm leading-[1.9] whitespace-pre-line text-foreground/80 font-game">
+            {/* game-narrative token (text-base leading-[1.9] whitespace-pre-line) */}
+            <div className="game-narrative text-foreground/80 font-game">
               {scenario.narrative}
             </div>
           </CardContent>
@@ -226,10 +215,8 @@ function PlayContent() {
 
         {/* Right column: Intel (phase 2+) → Options (phase 3) */}
         <div className="space-y-4">
-          {/* Phase 1 placeholder — desktop only, dims out once phase 2 starts */}
           {!isPhase2 && !isPhase3 && <Phase1Placeholder />}
 
-          {/* Intel section — appears in phase 2 and stays visible in phase 3 */}
           {(isPhase2 || isPhase3) && (
             <Card className="border-border/50 shadow-sm">
               <CardContent className="p-5">
@@ -242,7 +229,6 @@ function PlayContent() {
             </Card>
           )}
 
-          {/* Options section — appears only in phase 3 */}
           {isPhase3 && (
             <Card className="border-primary/20 shadow-sm bg-primary/2">
               <CardContent className="p-5">

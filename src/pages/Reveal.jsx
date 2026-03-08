@@ -33,8 +33,6 @@ const REVEAL_SECTIONS = [
 // ---------------------------------------------------------------------------
 
 export default function Reveal() {
-  // Allow 'ended' too — advanceMonth sets it before navigate('/results') fires,
-  // so without this the GameGuard would redirect back to '/' and lose the results.
   return (
     <GameGuard requiredStatus={['playing', 'ended']}>
       <RevealContent />
@@ -51,7 +49,6 @@ function RevealContent() {
   const isLastMonth = currentMonth >= scenarios.length;
 
   const handleNext = () => {
-    // advanceMonth returns new status synchronously (Zustand is sync)
     const newStatus = advanceMonth(scenarios.length);
     navigate(newStatus === 'ended' ? '/results' : '/play');
   };
@@ -89,14 +86,18 @@ function RevealContent() {
               )}
               style={{ animationDelay: delay }}>
               <CardContent className="p-5">
-                {/* Section label */}
-                <p className="text-xs font-semibold tracking-widest uppercase text-game-accent mb-3">
-                  {title}
-                </p>
-                {/* Section body */}
+                {/* Section label — game-label token */}
                 <p
                   className={cn(
-                    'text-sm leading-[1.85] whitespace-pre-line',
+                    'game-label mb-3',
+                    highlight ? 'text-game-accent' : 'text-game-accent',
+                  )}>
+                  {title}
+                </p>
+                {/* Section body — game-narrative token (text-base leading-[1.9]) */}
+                <p
+                  className={cn(
+                    'game-narrative',
                     highlight
                       ? 'text-game-accent font-semibold'
                       : 'text-foreground/80',

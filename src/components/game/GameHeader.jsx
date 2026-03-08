@@ -47,10 +47,10 @@ export default function GameHeader() {
             />
           </Link>
 
-          {/* Center: team + scenario */}
+          {/* Center: team + scenario — bumped from text-sm/text-xs to text-base/text-sm */}
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 justify-center">
             {teamName && (
-              <span className="font-semibold text-sm text-foreground truncate max-w-30 sm:max-w-xs">
+              <span className="font-semibold text-base text-foreground truncate max-w-30 sm:max-w-xs">
                 {teamName}
               </span>
             )}
@@ -62,7 +62,7 @@ export default function GameHeader() {
             )}
 
             {showScenarioInfo && (
-              <span className="text-xs text-muted-foreground whitespace-nowrap font-medium shrink-0">
+              <span className="text-sm text-muted-foreground whitespace-nowrap font-medium shrink-0">
                 Scenario{' '}
                 <span className="text-foreground font-semibold">
                   {currentMonth}
@@ -75,19 +75,19 @@ export default function GameHeader() {
             )}
           </div>
 
-          {/* Right: status badge + theme toggle */}
+          {/* Right: status badge — game-badge-text token + theme toggle */}
           <div className="shrink-0 flex items-center gap-2">
             {gameStatus === 'playing' && (
               <Badge
                 variant="outline"
-                className="text-[10px] tracking-widest uppercase font-semibold border-primary/30 text-primary font-game hidden sm:inline-flex">
+                className="game-badge-text border-primary/30 text-primary font-game hidden sm:inline-flex">
                 Live
               </Badge>
             )}
             {gameStatus === 'ended' && (
               <Badge
                 variant="outline"
-                className="text-[10px] tracking-widest uppercase font-semibold border-game-accent/40 text-game-accent font-game hidden sm:inline-flex">
+                className="game-badge-text border-game-accent/40 text-game-accent font-game hidden sm:inline-flex">
                 Complete
               </Badge>
             )}

@@ -29,12 +29,12 @@ export default function ScoreHeader({ points, maxPoints = 10 }) {
         +{points}
       </div>
 
-      {/* Feedback badge */}
+      {/* Feedback badge — game-badge-text token */}
       <div className="flex justify-center">
         <Badge
           variant="outline"
           className={cn(
-            'text-xs tracking-widest uppercase font-semibold font-game px-4 py-1',
+            'game-badge-text font-game px-4 py-1',
             getScoreBadgeColor(points, maxPoints),
           )}>
           {getScoreFeedback(points, maxPoints)}
