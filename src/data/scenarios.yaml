@@ -139,10 +139,7 @@ scenarios:
 
         But reckless transparency also creates chaos.
 
-      lesson: |
-
-        Leadership lesson:
-        Ethics must be paired with execution.
+      lesson: 'Ethics must be paired with execution.'
 
   - month: 2
     title: 'Month 2 — The Invisible Shortage'
@@ -277,10 +274,7 @@ scenarios:
 
         Delay multiplies damage.
 
-      lesson: |
-
-        Leadership lesson:
-        Silent crises still kill systems.
+      lesson: 'Silent crises still kill systems.'
 
   - month: 3
     title: 'Month 3 — The Quiet Signal'
@@ -420,10 +414,7 @@ scenarios:
 
         Uncertainty is a warning.
 
-      lesson: |
-
-        Leadership lesson:
-        Speed beats certainty.
+      lesson: 'Speed beats certainty.'
 
   - month: 4
     title: 'Month 4 — The Clean Break'
@@ -556,10 +547,7 @@ scenarios:
 
         Symbolic policy is not strategic policy.
 
-      lesson: |
-
-        Leadership lesson:
-        Implementation beats ideology.
+      lesson: 'Implementation beats ideology.'
 
   - month: 5
     title: 'Month 5 — The Modernization Trap'
@@ -704,10 +692,7 @@ scenarios:
 
         Cash flow is a strategic asset.
 
-      lesson: |
-
-        Leadership lesson:
-        Disruption should be layered, not detonated.
+      lesson: 'Disruption should be layered, not detonated.'
 
   - month: 6
     title: 'Month 6 — The Moral Exit'
@@ -847,10 +832,7 @@ scenarios:
 
         Symbolic exits without logistics cause collateral harm.
 
-      lesson: |
-
-        Leadership lesson:
-        Moral action still requires operational realism.
+      lesson: 'Moral action still requires operational realism.'
 
   - month: 7
     title: 'Month 7 — The Algorithmic Debt'
@@ -989,10 +971,7 @@ scenarios:
 
         Growth without governance destroys trust.
 
-      lesson: |
-
-        Leadership lesson:
-        Ethical debt matures with interest.
+      lesson: 'Ethical debt matures with interest.'
 
   - month: 8
     title: 'Month 8 — The Merger Delusion'
@@ -1127,10 +1106,7 @@ scenarios:
 
         Bigger is not better.
 
-      lesson: |
-
-        Leadership lesson:
-        Scale without integration is suicide.
+      lesson: 'Scale without integration is suicide.'
 
   - month: 9
     title: 'Month 9 — The Unthinkable Offer'
@@ -1266,10 +1242,7 @@ scenarios:
 
         Pride kills companies.
 
-      lesson: |
-
-        Leadership lesson:
-        Reality beats identity.
+      lesson: 'Reality beats identity.'
 
   - month: 10
     title: 'Month 10 — The Slow Burn'
@@ -1400,10 +1373,7 @@ scenarios:
 
         Delay multiplies damage.
 
-      lesson: |
-
-        Leadership lesson:
-        Silent crises are still crises.
+      lesson: 'Silent crises are still crises.'
 
   - month: 11
     title: 'Month 11 — The Run'
@@ -1536,10 +1506,7 @@ scenarios:
 
         Confidence is infrastructure.
 
-      lesson: |
-
-        Leadership lesson:
-        Speed beats purity.
+      lesson: 'Speed beats purity.'
 
   - month: 12
     title: 'Month 12 — The Convergence'
@@ -1680,7 +1647,4 @@ scenarios:
 
         Delay makes it irreversible.
 
-      lesson: |
-
-        Leadership lesson:
-        There is no painless collapse.
+      lesson: 'There is no painless collapse.'
