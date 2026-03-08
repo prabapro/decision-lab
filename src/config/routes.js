@@ -15,6 +15,7 @@ const NotFound = lazy(() => import('@pages/NotFound'));
 const Play = lazy(() => import('@pages/Play'));
 const Reveal = lazy(() => import('@pages/Reveal'));
 const Results = lazy(() => import('@pages/Results'));
+const ScenarioBuilder = lazy(() => import('@pages/ScenarioBuilder'));
 
 export const ROUTE_CONFIG = {
   // -------------------------------------------------------------------------
@@ -71,6 +72,14 @@ export const ROUTE_CONFIG = {
     sitemap_changefreq: 'monthly',
   },
 
+  SCENARIO_BUILDER: {
+    path: '/scenario-builder',
+    component: ScenarioBuilder,
+    title: 'Scenario Builder',
+    description: 'Create and edit game scenarios, then download the YAML file.',
+    showInNav: false, // intentionally hidden from navigation
+  },
+
   NOT_FOUND: {
     path: '*',
     component: NotFound,
@@ -81,7 +90,7 @@ export const ROUTE_CONFIG = {
 };
 
 // ---------------------------------------------------------------------------
-// Helper utilities (unchanged from boilerplate)
+// Helper utilities (unchanged)
 // ---------------------------------------------------------------------------
 
 export const getAllRoutePaths = () =>

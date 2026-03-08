@@ -27,6 +27,12 @@
 │   │   │   ├── Layout.jsx
 │   │   │   ├── MobileMenu.jsx
 │   │   │   └── Navigation.jsx
+│   │   ├── scenario-builder
+│   │   │   ├── IntelEditor.jsx
+│   │   │   ├── OptionEditor.jsx
+│   │   │   ├── RevealEditor.jsx
+│   │   │   ├── ScenarioEditor.jsx
+│   │   │   └── ScenarioList.jsx
 │   │   └── ui
 │   │       ├── alert-dialog.jsx
 │   │       ├── badge.jsx
@@ -53,19 +59,22 @@
 │   │   ├── NotFound.jsx
 │   │   ├── Play.jsx
 │   │   ├── Results.jsx
-│   │   └── Reveal.jsx
+│   │   ├── Reveal.jsx
+│   │   └── ScenarioBuilder.jsx
 │   ├── routes
 │   │   └── AppRouter.jsx
 │   ├── stores
 │   │   ├── useGameStore.js
 │   │   ├── useGameUIStore.js
+│   │   ├── useScenarioBuilderStore.js
 │   │   └── useSettingsStore.js
 │   ├── styles
 │   │   └── index.css
 │   ├── utils
 │   │   ├── markdownUtils.js
 │   │   ├── scoreUtils.js
-│   │   └── theme.js
+│   │   ├── theme.js
+│   │   └── yamlUtils.js
 │   ├── App.jsx
 │   └── main.jsx
 ├── tools

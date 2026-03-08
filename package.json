@@ -7,7 +7,7 @@
     "url": "https://hoptira.com"
   },
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "build:viz": "pnpm dlx vite-bundle-visualizer --report dist/stats.json --output dist/bundle-visualizer.html",
@@ -28,6 +28,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "js-yaml": "^4.1.1",
     "lucide-react": "^0.577.0",
     "radix-ui": "^1.4.3",
     "react": "^19.2.4",
