@@ -122,7 +122,6 @@ export const useScenarioBuilderStore = create((set) => ({
       const toIndex = scenarios.findIndex((s) => s.month === targetMonth);
 
       if (toIndex !== -1 && toIndex !== fromIndex) {
-        // Swap with the existing owner
         const temp = scenarios[fromIndex].month;
         scenarios[fromIndex].month = scenarios[toIndex].month;
         scenarios[toIndex].month = temp;
@@ -145,11 +144,22 @@ export const useScenarioBuilderStore = create((set) => ({
 
   deleteScenario: (index) =>
     set((state) => {
-      if (state.scenarios.length <= 1) return state; // keep at least one
+      if (state.scenarios.length <= 1) return state;
       const scenarios = state.scenarios.filter((_, i) => i !== index);
       const selectedIndex = Math.min(state.selectedIndex, scenarios.length - 1);
       return { scenarios, selectedIndex };
     }),
+
+  // ── Import ───────────────────────────────────────────────────────────────
+
+  /**
+   * Replace all scenarios with an externally parsed array (e.g. from a JS file
+   * upload). Resets selection to the first item.
+   *
+   * @param {Array} incoming — already-validated scenarios array
+   */
+  loadScenarios: (incoming) =>
+    set({ scenarios: deepClone(incoming), selectedIndex: 0 }),
 
   // ── Reset ────────────────────────────────────────────────────────────────
 

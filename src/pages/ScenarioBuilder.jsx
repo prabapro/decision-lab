@@ -5,7 +5,7 @@
  *
  * Layout:
  *   ┌─────────────────────────────────────────────────────┐
- *   │  Page header  (title + Download + Reset buttons)    │
+ *   │  Page header  (title + Upload + Download + Reset)   │
  *   ├──────────────┬──────────────────────────────────────┤
  *   │              │                                      │
  *   │ ScenarioList │       ScenarioEditor                 │
@@ -16,14 +16,22 @@
  * Not linked from navigation — accessible via direct URL only.
  */
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useScenarioBuilderStore } from '@stores/useScenarioBuilderStore';
 import { downloadScenariosYaml } from '@utils/yamlUtils';
+import { parseJSScenariosFile } from '@utils/jsImportUtils';
 import { Button } from '@components/ui/button';
 import { Badge } from '@components/ui/badge';
 import ScenarioList from '@components/scenario-builder/ScenarioList';
 import ScenarioEditor from '@components/scenario-builder/ScenarioEditor';
-import { Download, RotateCcw, Hammer } from 'lucide-react';
+import {
+  Download,
+  RotateCcw,
+  Hammer,
+  Upload,
+  AlertCircle,
+  CheckCircle,
+} from 'lucide-react';
 
 // ---------------------------------------------------------------------------
 // Reset confirmation inline widget
@@ -52,12 +60,48 @@ function ResetConfirm({ onConfirm, onCancel }) {
 }
 
 // ---------------------------------------------------------------------------
+// Import status toast — inline, auto-clears
+// ---------------------------------------------------------------------------
+
+function ImportStatus({ status }) {
+  if (!status) return null;
+
+  const isError = status.type === 'error';
+
+  return (
+    <div
+      className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md border ${
+        isError
+          ? 'bg-destructive/10 border-destructive/30 text-destructive'
+          : 'bg-score-perfect/10 border-score-perfect/30 text-score-perfect'
+      }`}>
+      {isError ? (
+        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+      ) : (
+        <CheckCircle className="w-3.5 h-3.5 shrink-0" />
+      )}
+      <span>{status.message}</span>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Page
 // ---------------------------------------------------------------------------
 
 export default function ScenarioBuilder() {
-  const { scenarios, resetToOriginal } = useScenarioBuilderStore();
+  const { scenarios, resetToOriginal, loadScenarios } =
+    useScenarioBuilderStore();
   const [confirmReset, setConfirmReset] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [importStatus, setImportStatus] = useState(null); // { type: 'success'|'error', message }
+  const fileInputRef = useRef(null);
+
+  // Clear status after 4 seconds
+  const showStatus = (type, message) => {
+    setImportStatus({ type, message });
+    setTimeout(() => setImportStatus(null), 4000);
+  };
 
   const handleDownload = () => {
     downloadScenariosYaml(scenarios);
@@ -66,6 +110,34 @@ export default function ScenarioBuilder() {
   const handleReset = () => {
     resetToOriginal();
     setConfirmReset(false);
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Reset the input so the same file can be re-uploaded if needed
+    e.target.value = '';
+
+    setImporting(true);
+    setImportStatus(null);
+
+    try {
+      const parsed = await parseJSScenariosFile(file);
+      loadScenarios(parsed);
+      showStatus(
+        'success',
+        `Imported ${parsed.length} scenario${parsed.length !== 1 ? 's' : ''} from ${file.name}`,
+      );
+    } catch (err) {
+      showStatus('error', err.message);
+    } finally {
+      setImporting(false);
+    }
   };
 
   return (
@@ -93,7 +165,31 @@ export default function ScenarioBuilder() {
         </div>
 
         {/* Right: actions */}
-        <div className="flex items-center gap-2 self-end sm:self-auto">
+        <div className="flex items-center gap-2 self-end sm:self-auto flex-wrap justify-end">
+          {/* Import status */}
+          <ImportStatus status={importStatus} />
+
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".js"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+
+          {/* Upload JS button */}
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={handleUploadClick}
+            disabled={importing}
+            className="h-8 gap-1.5 text-xs font-semibold border-primary/30 text-primary hover:bg-primary/5">
+            <Upload className="w-3.5 h-3.5" />
+            {importing ? 'Importing…' : 'Import JS'}
+          </Button>
+
+          {/* Reset */}
           {confirmReset ? (
             <ResetConfirm
               onConfirm={handleReset}
@@ -110,6 +206,7 @@ export default function ScenarioBuilder() {
             </Button>
           )}
 
+          {/* Download YAML */}
           <Button
             size="sm"
             onClick={handleDownload}
