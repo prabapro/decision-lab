@@ -139,10 +139,7 @@ scenarios:
 
         But reckless transparency also creates chaos.
 
-      lesson: |
-
-        Leadership lesson:
-        Ethics must be paired with execution.
+      lesson: 'Ethics must be paired with execution.'
 
   - month: 2
     title: 'Month 2 — The Invisible Shortage'
@@ -277,7 +274,4 @@ scenarios:
 
         Delay multiplies damage.
 
-      lesson: |
-
-        Leadership lesson:
-        Silent crises still kill systems.
+      lesson: 'Silent crises still kill systems.'

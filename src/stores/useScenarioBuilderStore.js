@@ -70,12 +70,12 @@ const makeEmptyScenario = (month) => ({
     },
   ],
   reveal: {
-    outcome: '\nOutcome of the best decision.\n',
-    realStory: '\nWhat really happened in history.\n',
-    comparison: '\nYour decision vs reality.\n',
-    scoring: '\nWhy this was scored this way.\n',
-    context: '\nHistorical context.\n',
-    lesson: '\nLeadership lesson:\nDescribe it here.\n',
+    outcome: 'Outcome of the best decision.',
+    realStory: 'What really happened in history.',
+    comparison: 'Your decision vs reality.',
+    scoring: 'Why this was scored this way.',
+    context: 'Historical context.',
+    lesson: 'Describe it here.',
   },
 });
 
