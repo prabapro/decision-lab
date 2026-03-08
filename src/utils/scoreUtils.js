@@ -10,18 +10,18 @@ import { AURA_TIERS } from '@config/constants';
  * Returns a Tailwind text-colour class based on a given score.
  *
  * Thresholds:
- *   perfect (points === maxPoints) → game-accent  (gold)
- *   zero    (points === 0)         → destructive  (red)
- *   default                        → primary      (blue/white depending on theme)
+ *   perfect (points === maxPoints) → score-perfect  (green)
+ *   zero    (points === 0)         → destructive    (red)
+ *   partial                        → score-partial  (orange)
  *
  * @param {number} points
  * @param {number} [maxPoints=10]
  * @returns {string} Tailwind class string
  */
 export const getScoreTextColor = (points, maxPoints = 10) => {
-  if (points === maxPoints) return 'text-game-accent';
+  if (points === maxPoints) return 'text-score-perfect';
   if (points === 0) return 'text-destructive';
-  return 'text-primary';
+  return 'text-score-partial';
 };
 
 /**
@@ -33,10 +33,10 @@ export const getScoreTextColor = (points, maxPoints = 10) => {
  */
 export const getScoreBadgeColor = (points, maxPoints = 10) => {
   if (points === maxPoints)
-    return 'border-game-accent/40 text-game-accent bg-game-accent/5';
+    return 'border-score-perfect/40 text-score-perfect bg-score-perfect/5';
   if (points === 0)
     return 'border-destructive/40 text-destructive bg-destructive/5';
-  return 'border-border text-muted-foreground';
+  return 'border-score-partial/40 text-score-partial bg-score-partial/5';
 };
 
 // ---------------------------------------------------------------------------
