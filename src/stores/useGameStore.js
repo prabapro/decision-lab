@@ -2,21 +2,9 @@
 
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { HIGH_IMPACT_MONTHS } from '@data/scenarios';
+import { HIGH_IMPACT_MONTHS, INITIAL_GAME_STATE } from '@config/constants';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Vite React App';
-
-const INITIAL_GAME_STATE = {
-  teamName: '',
-  currentMonth: 1,
-  totalScore: 0,
-  decisionLog: [],
-  systemStress: 0,
-  regretCount: 0,
-  redemptionCount: 0,
-  gameStatus: 'idle', // 'idle' | 'playing' | 'ended'
-  pendingReveal: false, // true while the reveal for the current month hasn't been acknowledged
-};
 
 export const useGameStore = create()(
   devtools(

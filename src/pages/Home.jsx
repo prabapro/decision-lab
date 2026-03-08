@@ -3,14 +3,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@stores/useGameStore';
+import { INTRO_LINES } from '@config/constants';
 import GameGuard from '@components/common/GameGuard';
-
-const INTRO_LINES = [
-  'You are about to enter a high-stakes decision laboratory.',
-  'Over 18 months, your team will face real leadership crises drawn from history.',
-  'You will not be given hindsight. You will not be given perfect information.',
-  'Only after each decision will you discover what really happened.',
-];
 
 export default function Home() {
   return (

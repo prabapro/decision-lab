@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@stores/useGameStore';
-import { AURA_TIERS, scenarios } from '@data/scenarios';
+import { AURA_TIERS } from '@config/constants';
+import { scenarios } from '@data/scenarios';
 import GameGuard from '@components/common/GameGuard';
 
 // ---------------------------------------------------------------------------
