@@ -8,12 +8,51 @@ import GameGuard from '@components/common/GameGuard';
 import AnimatedBorderCard from '@components/common/AnimatedBorderCard';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ShieldAlert } from 'lucide-react';
+
+// ---------------------------------------------------------------------------
+// Classified briefing block — wraps INTRO_LINES in a dossier-style container
+// ---------------------------------------------------------------------------
+
+function ClassifiedBriefing() {
+  return (
+    <div className="border border-accent-foreground/25 rounded-lg bg-accent-foreground/5 overflow-hidden">
+      {/* Header bar */}
+      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-accent-foreground/20 bg-accent-foreground/8">
+        <ShieldAlert className="w-3.5 h-3.5 text-accent-foreground shrink-0" />
+        <span className="text-sm font-black tracking-[0.25em] uppercase text-accent-foreground select-none">
+          Classified Briefing
+        </span>
+      </div>
+
+      {/* Lines */}
+      <div className="px-4 py-4 space-y-3">
+        {INTRO_LINES.map((line, i) => (
+          <p
+            key={i}
+            className="text-sm leading-relaxed text-foreground/70 flex gap-2.5">
+            <span className="text-accent-foreground/60 mt-0.5 shrink-0 font-bold select-none">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            {line}
+          </p>
+        ))}
+
+        {/* Redacted footer line */}
+        <p className="italic text-muted-foreground/40 text-xs pt-1 border-t border-accent-foreground/10 mt-2">
+          Every decision leaves a fingerprint on history.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Page
+// ---------------------------------------------------------------------------
 
 export default function Home() {
   return (
-    // Only idle users should see the welcome screen.
-    // playing → resume at /play | ended → go to /results
     <GameGuard
       requiredStatus="idle"
       redirectMap={{ playing: '/play', ended: '/results' }}>
@@ -29,21 +68,23 @@ function HomeContent() {
 
   const handleStart = () => {
     if (!teamName.trim()) return;
-    // Mark this as an active browser session BEFORE navigating, so Play.jsx
-    // knows this is a fresh start — not a browser-reopen of a persisted game.
     try {
       sessionStorage.setItem('decision-lab-session', '1');
     } catch {
       /* ignore */
     }
-    startGame(teamName);
+    startGame(teamName.toUpperCase());
     navigate('/play');
+  };
+
+  const handleTeamNameChange = (e) => {
+    setTeamName(e.target.value.toUpperCase());
   };
 
   return (
     <div className="flex-1 flex items-center justify-center p-6 font-game">
       <AnimatedBorderCard
-        className="w-full max-w-2xl shadow-2xl"
+        className="w-full max-w-6xl shadow-2xl"
         innerClassName="px-8 py-12 sm:px-14 sm:py-16">
         {/* ── Spinning logo mark ──────────────────────────────────────── */}
         <div className="flex justify-center mb-8">
@@ -72,34 +113,21 @@ function HomeContent() {
         {/* ── Divider ─────────────────────────────────────────────────── */}
         <div className="h-px bg-border/50 max-w-xs mx-auto mb-6" />
 
-        {/* ── Intro lines ─────────────────────────────────────────────── */}
-        <div className="space-y-3 text-left max-w-lg mx-auto mb-8">
-          {INTRO_LINES.map((line, i) => (
-            <p
-              key={i}
-              className="text-sm leading-relaxed text-foreground/70 flex gap-2.5">
-              {/* Accent bullet */}
-              <span className="text-accent-foreground mt-0.5 shrink-0 font-bold select-none">
-                ·
-              </span>
-              {line}
-            </p>
-          ))}
-          <p className="italic text-muted-foreground/50 text-xs pt-2 text-center">
-            Every decision leaves a fingerprint on history.
-          </p>
+        {/* ── Classified briefing ─────────────────────────────────────── */}
+        <div className="max-w-3xl mx-auto mb-10">
+          <ClassifiedBriefing />
         </div>
 
         {/* ── Input + CTA ─────────────────────────────────────────────── */}
         <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto w-full">
           <Input
             type="text"
-            placeholder="Enter your team name"
+            placeholder="ENTER YOUR TEAM NAME"
             value={teamName}
-            onChange={(e) => setTeamName(e.target.value)}
+            onChange={handleTeamNameChange}
             onKeyDown={(e) => e.key === 'Enter' && handleStart()}
             maxLength={40}
-            className="text-center font-game h-10"
+            className="text-center font-game h-10 uppercase placeholder:normal-case placeholder:tracking-widest placeholder:text-xs"
             autoFocus
           />
           <Button
