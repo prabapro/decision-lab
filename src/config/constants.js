@@ -13,9 +13,9 @@ export const scenarios = data.scenarios;
 // ---------------------------------------------------------------------------
 
 export const PHASE_DURATIONS = {
-  1: 10, // Read Case - Default: 90 seconds
-  2: 5, // Gather Intel - Default: 30 seconds
-  3: 5, // Decide Now - Default: 25 seconds
+  1: 90, // Read Case - Default: 90 seconds
+  2: 30, // Gather Intel - Default: 30 seconds
+  3: 25, // Decide Now - Default: 25 seconds
 };
 
 export const PHASE_META = {
@@ -89,7 +89,7 @@ export const INITIAL_GAME_STATE = {
 
 export const INTRO_LINES = [
   'You are about to enter a high-stakes decision laboratory.',
-  'Over 18 months, your team will face real leadership crises drawn from history.',
+  'Over 12 months, your team will face real leadership crises drawn from history.',
   'You will not be given hindsight. You will not be given perfect information.',
   'Only after each decision will you discover what really happened.',
 ];
