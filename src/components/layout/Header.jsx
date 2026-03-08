@@ -7,7 +7,7 @@ import { ThemeToggle } from '@components/ui/theme-toggle';
 
 export default function Header({ onMobileMenuToggle, isMobileMenuOpen }) {
   return (
-    <header className="border-b border-border/40 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
+    <header className="border-b border-border/40 bg-background/80 backdrop-blur-md supports-backdrop-filter:bg-background/60 sticky top-0 z-40">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo - Left */}
@@ -15,10 +15,10 @@ export default function Header({ onMobileMenuToggle, isMobileMenuOpen }) {
             <Link
               to="/"
               className="flex items-center space-x-2 hover:opacity-70 transition-opacity duration-200"
-              aria-label="Hoptira - Go to homepage">
+              aria-label="The Decision Lab - Go to homepage">
               <img
-                src="images/hoptira-logo.svg"
-                alt="Hoptira Logo"
+                src="images/decision-lab.svg"
+                alt="The Decision Lab Logo"
                 className="h-8 w-auto transition-opacity duration-200"
               />
             </Link>

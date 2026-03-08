@@ -3,8 +3,7 @@
 │   └── ENV_VARS.md
 ├── public
 │   └── images
-│       ├── hoptira-icon.svg
-│       └── hoptira-logo.svg
+│       └── decision-lab.svg
 ├── src
 │   ├── components
 │   │   ├── common

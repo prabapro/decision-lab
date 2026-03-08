@@ -41,8 +41,8 @@ export default function GameHeader() {
             className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity duration-200 shrink-0"
             aria-label="The Decision Lab — Home">
             <img
-              src="/images/hoptira-icon.svg"
-              alt="Hoptira"
+              src="/images/decision-lab.svg"
+              alt="The Decision Lab Logo"
               className="h-7 w-auto"
             />
           </Link>
