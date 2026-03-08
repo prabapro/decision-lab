@@ -5,6 +5,7 @@ import { useGameStore } from '@stores/useGameStore';
 import { useGameUIStore } from '@stores/useGameUIStore';
 import { scenarios } from '@config/constants';
 import { Badge } from '@components/ui/badge';
+import { ThemeToggle } from '@components/ui/theme-toggle';
 import PhaseTimerBar from './PhaseTimerBar';
 import { cn } from '@/lib/utils';
 
@@ -74,8 +75,8 @@ export default function GameHeader() {
             )}
           </div>
 
-          {/* Right: status badge */}
-          <div className="shrink-0 w-20 flex justify-end">
+          {/* Right: status badge + theme toggle */}
+          <div className="shrink-0 flex items-center gap-2">
             {gameStatus === 'playing' && (
               <Badge
                 variant="outline"
@@ -90,6 +91,7 @@ export default function GameHeader() {
                 Complete
               </Badge>
             )}
+            <ThemeToggle />
           </div>
         </div>
 

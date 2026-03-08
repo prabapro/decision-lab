@@ -9,6 +9,22 @@ import data from '@data/scenarios.yaml';
 export const scenarios = data.scenarios;
 
 // ---------------------------------------------------------------------------
+// Phase Timer — used in usePhaseTimer.js and consumed via hook in Play.jsx
+// ---------------------------------------------------------------------------
+
+export const PHASE_DURATIONS = {
+  1: 5, // Read Case - Default: 90 seconds
+  2: 5, // Gather Intel - Default: 30 seconds
+  3: 5, // Decide Now - Default: 25 seconds
+};
+
+export const PHASE_META = {
+  1: { emoji: '📖', label: 'Read Case' },
+  2: { emoji: '🧠', label: 'Gather Intel' },
+  3: { emoji: '⚡', label: 'Decide Now' },
+};
+
+// ---------------------------------------------------------------------------
 // Aura Tiers — used in Results.jsx to map total score to a leadership label
 // ---------------------------------------------------------------------------
 
@@ -50,22 +66,6 @@ export const AURA_TIERS = [
 // ---------------------------------------------------------------------------
 
 export const HIGH_IMPACT_MONTHS = [2, 3, 4, 10, 11, 12];
-
-// ---------------------------------------------------------------------------
-// Phase Timer — used in usePhaseTimer.js and consumed via hook in Play.jsx
-// ---------------------------------------------------------------------------
-
-export const PHASE_DURATIONS = {
-  1: 5, // Read Case - Default: 90 seconds
-  2: 3, // Gather Intel - Default: 30 seconds
-  3: 2, // Decide Now - Default: 25 seconds
-};
-
-export const PHASE_META = {
-  1: { emoji: '📖', label: 'Read Case' },
-  2: { emoji: '🧠', label: 'Gather Intel' },
-  3: { emoji: '⚡', label: 'Decide Now' },
-};
 
 // ---------------------------------------------------------------------------
 // Initial Game State — used in useGameStore as the reset/start baseline
