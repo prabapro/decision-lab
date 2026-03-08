@@ -3,64 +3,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@stores/useGameStore';
-import { AURA_TIERS, scenarios } from '@config/constants';
+import { scenarios } from '@config/constants';
+import {
+  getAuraTier,
+  generateLeadershipProfile,
+  buildNarrative,
+} from '@utils/scoreUtils';
 import GameGuard from '@components/common/GameGuard';
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Badge } from '@components/ui/badge';
 import { RotateCcw, Trophy } from 'lucide-react';
-
-// ---------------------------------------------------------------------------
-// Helpers (ported from original script.js, logic unchanged)
-// ---------------------------------------------------------------------------
-
-function generateLeadershipProfile(decisionLog, totalScore, systemStress) {
-  let early = 0,
-    delay = 0,
-    ethical = 0,
-    pragmatic = 0;
-
-  decisionLog.forEach((d) => {
-    if (d.time === 'early') early++;
-    if (d.time === 'delay') delay++;
-    if (d.ethics === 'high') ethical++;
-    if (d.reality === 'pragmatic') pragmatic++;
-  });
-
-  if (early >= 6 && pragmatic >= 6 && totalScore >= 85)
-    return 'Visionary Stabilizer';
-  if (delay >= 6 && ethical >= 4) return 'Reactive Humanitarian';
-  if (ethical >= 7 && pragmatic < 4) return 'Ethical Idealist';
-  if (systemStress >= 14) return 'Systemic Risk Architect';
-  if (totalScore < 35) return 'Collapse Engineer';
-  return 'Strategic Realist';
-}
-
-function buildNarrative({
-  aura,
-  systemStress,
-  regretCount,
-  redemptionCount,
-  totalScore,
-}) {
-  let text = aura.tone;
-
-  if (systemStress >= 10) {
-    text +=
-      '\n\nYour repeated delays and ideological decisions created hidden instability that nearly collapsed the system.';
-  }
-  if (regretCount >= 4) {
-    text +=
-      '\n\nYou repeatedly chose denial or delay when early action was required.';
-  }
-  if (redemptionCount >= 5) {
-    text +=
-      '\n\nYou demonstrated redemption by correcting early mistakes through decisive late leadership.';
-  }
-
-  text += `\n\nFinal System Stress: ${systemStress}\nTotal Score: ${totalScore} / ${scenarios.length * 10}`;
-  return text;
-}
 
 // ---------------------------------------------------------------------------
 // Sub-components
@@ -132,9 +85,7 @@ function ResultsContent() {
 
   const [confirmReset, setConfirmReset] = useState(false);
 
-  const aura =
-    AURA_TIERS.find((t) => totalScore >= t.min) ??
-    AURA_TIERS[AURA_TIERS.length - 1];
+  const aura = getAuraTier(totalScore);
   const identity = generateLeadershipProfile(
     decisionLog,
     totalScore,
@@ -146,6 +97,7 @@ function ResultsContent() {
     regretCount,
     redemptionCount,
     totalScore,
+    scenarioCount: scenarios.length,
   });
 
   const handleReset = () => {
