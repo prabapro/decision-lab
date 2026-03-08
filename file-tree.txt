@@ -32,9 +32,7 @@
 │   │   ├── constants.js
 │   │   └── routes.js
 │   ├── data
-│   │   ├── privacy-policy.md
-│   │   ├── scenarios.js
-│   │   └── terms.md
+│   │   └── scenarios.yaml
 │   ├── hooks
 │   │   ├── usePhaseTimer.js
 │   │   └── useTheme.js
@@ -44,7 +42,6 @@
 │   │   ├── Home.jsx
 │   │   ├── NotFound.jsx
 │   │   ├── Play.jsx
-│   │   ├── Privacy.jsx
 │   │   ├── Results.jsx
 │   │   ├── Reveal.jsx
 │   │   └── Terms.jsx

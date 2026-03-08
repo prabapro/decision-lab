@@ -40,11 +40,6 @@ export default function Footer() {
             {/* Footer Links */}
             <div className="flex items-center space-x-8 text-sm md:text-sm">
               <Link
-                to="/privacy"
-                className="text-muted-foreground/70 hover:text-foreground transition-colors duration-200 hover:underline decoration-dotted underline-offset-4">
-                Privacy
-              </Link>
-              <Link
                 to="/terms"
                 className="text-muted-foreground/70 hover:text-foreground transition-colors duration-200 hover:underline decoration-dotted underline-offset-4">
                 Terms
